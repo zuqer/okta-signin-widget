@@ -129,6 +129,16 @@ module.exports = function (grunt) {
           }
         ]
       },
+      server: {
+        files: [
+          {
+            expand: true,
+            cwd: 'buildtools/',
+            src: 'index.html',
+            dest: 'target/'
+          }
+        ]
+      },
       test: {
         files: [
           {expand: true, src: ['test/**'], dest: JS + '/'}
@@ -299,6 +309,16 @@ module.exports = function (grunt) {
       }
     },
 
+    connect: {
+      server: {
+        options: {
+          port: 9001,
+          base: 'target',
+          keepalive: true
+        }
+      }
+    },
+
     scsslint: {
       all: [SASS + '/**/*.scss'],
       options: (function () {
@@ -333,6 +353,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-scss-lint');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-json-generator');
   grunt.loadNpmTasks('grunt-rename');
