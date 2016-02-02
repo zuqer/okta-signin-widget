@@ -4,3 +4,4 @@ target
 build2
 .grunt
 .sass-cache
+.widgetrc

@@ -14,23 +14,16 @@
 
   <script src="js/okta-sign-in.js"></script>
   <script type="text/javascript">
-    var baseUrl = 'https://rchildtest.okta.com',
-        oktaSignIn = new OktaSignIn({
-          baseUrl: baseUrl,
-          logo: '/img/logo_widgico.png',
-          features: {
-            router: true,
-            rememberMe: true,
-            selfServiceUnlock: true,
-            multiOptionalFactorEnroll: true
-          }
-        });
+
+    /*-- ADD OPTIONS --*/
+
+    var oktaSignIn = new OktaSignIn(options);
 
     oktaSignIn.renderEl(
       { el: '#okta-login-container' },
       function (res) {
         if (res.status === 'SUCCESS') {
-          res.session.setCookieAndRedirect(baseUrl + '/app/UserHome');
+          res.session.setCookieAndRedirect(options.baseUrl + '/app/UserHome');
         }
       }
     );

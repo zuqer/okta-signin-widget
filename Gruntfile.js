@@ -8,7 +8,8 @@
 module.exports = function (grunt) {
   /* jshint maxstatements: false */
 
-  var open = require('open');
+  var open = require('open'),
+      _    = require('lodash');
 
   var OKTA_HOME             = process.env.OKTA_HOME + '/okta-core/',
       JS                    = 'target/js',
@@ -21,7 +22,8 @@ module.exports = function (grunt) {
       SASS                  = ASSETS + 'sass',
       SCSSLINT_OUT_FILE     = OKTA_HOME + 'build2/login_scsslint.xml',
       CSS                   = 'target/css',
-      COPYRIGHT_TEXT        = grunt.file.read('src/widget/copyright.frag');
+      COPYRIGHT_TEXT        = grunt.file.read('src/widget/copyright.frag'),
+      WIDGET_RC             = '.widgetrc';
 
   function getRequireOptions(options) {
     var requireOptions,
@@ -130,12 +132,39 @@ module.exports = function (grunt) {
         ]
       },
       server: {
+        options: {
+          process: function (content) {
+            var options = {
+              baseUrl: 'http://rain.okta1.com:1802',
+              logo: '/img/logo_widgico.png',
+              features: {
+                router: true,
+                rememberMe: true,
+                multiOptionalFactorEnroll: true
+              }
+            };
+
+            // Extend default options with overrides in .widgetrc file
+            if (grunt.file.exists(WIDGET_RC)) {
+              _.extend(options, grunt.file.readJSON(WIDGET_RC).initOptions);
+            }
+
+            return content.replace(
+              '/*-- ADD OPTIONS --*/',
+              'var options = ' + JSON.stringify(options) + ';'
+            );
+
+          }
+        },
         files: [
           {
             expand: true,
             cwd: 'buildtools/',
-            src: 'index.html',
-            dest: 'target/'
+            src: 'index.tpl',
+            dest: 'target/',
+            rename: function (src, dest) {
+              return 'target/index.html';
+            }
           }
         ]
       },
