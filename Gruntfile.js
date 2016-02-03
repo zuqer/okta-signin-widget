@@ -3,7 +3,7 @@
 // npm install (to install all dependencies, including grunt)
 // grunt test (to run test task)
 
-/*global module, process */
+/*global module, process, JSON */
 
 module.exports = function (grunt) {
   /* jshint maxstatements: false */
@@ -162,7 +162,7 @@ module.exports = function (grunt) {
             cwd: 'buildtools/',
             src: 'index.tpl',
             dest: 'target/',
-            rename: function (src, dest) {
+            rename: function () {
               return 'target/index.html';
             }
           }
@@ -226,6 +226,7 @@ module.exports = function (grunt) {
       // This is the version that we will use internally for the loginpage:
       // - Non-uglified (will happen later when we're building loginpage)
       // - Does not include jquery
+      // CALL THIS SOMETHING ELSE.....
       okta: {
         dest: JS + '/build.js',
         options: getRequireOptions({
@@ -234,10 +235,15 @@ module.exports = function (grunt) {
           outFile: 'okta-sign-in-no-jquery.js'
         })
       },
-      // This generates the artifact that is used by widget consumers. In the
-      // future, we'll probably publish several artifacts (i.e. one that
-      // does not package jquery, etc)
-      compile: {
+      dev: {
+        dest: JS + '/build.js',
+        options: getRequireOptions({
+          includeJquery: true,
+          uglify: false,
+          outFile: 'okta-sign-in.js'
+        })
+      },
+      prod: {
         dest: JS + '/build.js',
         options: getRequireOptions({
           includeJquery: true,
@@ -407,8 +413,18 @@ module.exports = function (grunt) {
     grunt.task.run(['test:build', 'open-jasmine-specs-in-browser']);
   });
 
-  // Used by pom.xml to build
   grunt.task.registerTask('build', function (flag) {
+    var tasks = ['copy:src', 'copy:assets', 'propertiesToJSON', 'JSONtoJs'];
+    if (flag === 'minified') {
+      tasks.push('compass:minify', 'json_generator:prod');
+    } else {
+      tasks.push('compass:build', 'json_generator:dev');
+    }
+    tasks.push('compass:buildtheme', 'exec');
+    grunt.task.run(tasks);
+  });
+
+  grunt.task.registerTask('build-okta', function (flag) {
     var tasks = ['copy:src', 'copy:assets', 'propertiesToJSON', 'JSONtoJs'];
     if (flag === 'minified') {
       tasks.push('compass:minify');
@@ -421,9 +437,8 @@ module.exports = function (grunt) {
 
   grunt.task.registerTask(
     'cut-new-version',
-    'Temporary task to cut new version of the widget',
-    ['copy:src', 'propertiesToJSON', 'JSONtoJs', 'compass:minify', 'compass:buildtheme',
-     'json_generator:compile', 'exec', 'rename']
+    'Temporary task to cut new version of the widget alskdfjasldfkasfdjas;flkasdfl;kasdfjsaldfjkasdflsakfjasldfkasjflaskdfjksafljkasdfjkals;dfljkasdf;lkasdfklasdlfaskdfasldfjasdlfkjsa',
+    ['build:minified', 'rename']
   );
 
   grunt.task.registerTask('lint', ['scsslint', 'jshint']);
