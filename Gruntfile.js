@@ -445,6 +445,7 @@ module.exports = function (grunt) {
     ['build:minified', 'rename']
   );
 
-  grunt.task.registerTask('lint', ['scsslint', 'jshint']);
+  // grunt.task.registerTask('lint', ['scsslint', 'jshint']);
+  grunt.task.registerTask('lint', ['jshint']);
   grunt.task.registerTask('default', ['lint', 'test']);
 };

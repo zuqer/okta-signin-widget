@@ -36,10 +36,10 @@ function build() {
   start_test_suite ${BUILD_TEST_SUITE_ID}
   if bundle install && npm install && npm run build:prod; then
     echo "Finishing up test suite $BUILD_TEST_SUITE_ID"
-    finish_test_suite "build"
+    finish_test_suite "buildbla"
   else
     echo "Build failed"
-    finish_failed_test_suite "build"
+    finish_failed_test_suite "buildbla"
     exit 1
   fi
 }
@@ -48,12 +48,12 @@ function lint() {
   start_test_suite ${LINT_TEST_SUITE_ID}
   if npm run lint:report; then
     echo "Finishing up test suite $LINT_TEST_SUITE_ID"
-    finish_test_suite "build"
-    # finish_test_suite "jslint" "okta-signin-widget/build2/"
+    # finish_test_suite "build"
+    finish_test_suite "jslint" "okta-signin-widget/build2/"
   else
     echo "Lint failed"
-    finish_failed_test_suite "build"
-    # finish_failed_test_suite "jslint" "okta-signin-widget/build2/"
+    # finish_failed_test_suite "build"
+    finish_failed_test_suite "jslint" "okta-signin-widget/build2/"
   fi
 }
 
