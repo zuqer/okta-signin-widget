@@ -93,7 +93,6 @@ module.exports = function (grunt) {
         if (process.argv.indexOf('--checkstyle') > -1) {
           conf.reporter = 'checkstyle';
           conf.reporterOutput = JSHINT_OUT_FILE;
-          conf.force = 'true';
         }
         return conf;
       }()),
