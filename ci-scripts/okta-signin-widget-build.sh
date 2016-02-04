@@ -33,13 +33,13 @@ TASKS:
 #
 
 function build() {
-  # start_test_suite ${BUILD_TEST_SUITE_ID}
+  start_test_suite ${BUILD_TEST_SUITE_ID}
   if npm install && npm run build:prod; then
     echo "Finishing up test suite $BUILD_TEST_SUITE_ID"
-    # finish_test_suite "build"
+    finish_test_suite "build"
   else
     echo "Build failed"
-    # finish_failed_test_suite "build"
+    finish_failed_test_suite "build"
     exit 1
   fi
 }
