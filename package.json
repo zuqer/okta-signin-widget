@@ -2,6 +2,7 @@
   "name": "okta-signin-widget",
   "version": "1.1.0",
   "scripts": {
+    "lint:report": "grunt lint --checkstyle",
     "lint": "grunt lint",
     "test": "grunt test",
     "build:dev": "grunt build",
@@ -20,7 +21,7 @@
     "grunt-json-generator": "^0.1.0",
     "grunt-properties-to-json": "^0.5.1",
     "grunt-rename": "^0.1.4",
-    "grunt-scss-lint": "^0.3.6",
+    "grunt-scss-lint": "^0.3.8",
     "grunt-template-jasmine-requirejs": "^0.2.3",
     "lodash": "^4.1.0",
     "open": "0.0.5",

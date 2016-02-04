@@ -2,7 +2,8 @@
 set +x
 set -e
 
-TASK=$1
+# Bacon does not pass a parameter, so default to the one we want (deploy)
+TASK="${1:-deploy}"
 
 BUILD_TEST_SUITE_ID=D33E21EE-E0D0-401D-8162-56B9A7BA0539
 LINT_TEST_SUITE_ID=2D4D1259-92C2-45BA-A74D-E665B7EC17FB
@@ -28,38 +29,50 @@ TASKS:
   exit $OUTPUTCODE
 }
 
+# If I want, have a check for stuff like npm versions,
+#
+
 function build() {
-  start_test_suite ${BUILD_TEST_SUITE_ID}
+  # start_test_suite ${BUILD_TEST_SUITE_ID}
   if npm install && npm run build:prod; then
     echo "Finishing up test suite $BUILD_TEST_SUITE_ID"
-    finish_test_suite "build"
+    # finish_test_suite "build"
   else
     echo "Build failed"
-    finish_failed_test_suite "build"
+    # finish_failed_test_suite "build"
     exit 1
   fi
 }
 
 function lint() {
   start_test_suite ${LINT_TEST_SUITE_ID}
-  if npm run lint; then
+  if npm run lint:report; then
     echo "Finishing up test suite $LINT_TEST_SUITE_ID"
-    finish_test_suite "lint"
+    finish_test_suite "checkstyle" "okta-signin-widget/build2/"
   else
     echo "Lint failed"
-    finish_failed_test_suite "lint"
+    finish_failed_test_suite "checkstyle" "okta-signin-widget/build2/"
   fi
 }
 
 function unit() {
-  start_test_suite ${UNIT_TEST_SUITE_ID}
+  # Check framework repo to find the thing that parses all this
+  # There is something about junit in jasmine task - how do I invoke it??
+  # Okay, looks like we need to use junit, and report on
+  # build2/reports/jasmine/TEST-EnrollChoices.xml
+
+  # start_test_suite ${UNIT_TEST_SUITE_ID}
   if npm test; then
     echo "Finishing up test suite $UNIT_TEST_SUITE_ID"
-    finish_test_suite "unit"
+    # finish_test_suite "unit"
   else
     echo "Unit failed"
-    finish_failed_test_suite "unit"
+    # finish_failed_test_suite "unit"
   fi
+}
+
+function publish() {
+  echo "Trying to publish"
 }
 
 function deploy() {
@@ -80,13 +93,13 @@ case $TASK in
   build)
     build
     lint
-    unit
+    # unit
     ;;
   deploy)
     build
     lint
-    unit
-    deploy
+    # unit
+    # deploy
     ;;
   *)
     usage $TASK

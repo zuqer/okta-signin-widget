@@ -15,12 +15,14 @@ module.exports = function (grunt) {
       JS                    = 'target/js',
       JASMINE_TEST_FOLDER   = 'build2/reports/jasmine',
       JASMINE_TEST_FILE     = JASMINE_TEST_FOLDER + '/login.html',
-      JSHINT_OUT_FILE       = OKTA_HOME + 'build2/login_jshint_checkstyle.xml',
+      // JSHINT_OUT_FILE       = 'build2/login_jshint_checkstyle.xml',
+      JSHINT_OUT_FILE       = 'build2/loginjs-checkstyle-result.xml',
       SPEC_HOME             = JS + '/test/spec/',
       SDK                   = 'target/sdk',
       ASSETS                = 'assets/',
       SASS                  = ASSETS + 'sass',
-      SCSSLINT_OUT_FILE     = OKTA_HOME + 'build2/login_scsslint.xml',
+      // SCSSLINT_OUT_FILE     = 'build2/login_scsslint.xml',
+      SCSSLINT_OUT_FILE     = 'build2/loginscss-checkstyle-result.xml',
       CSS                   = 'target/css',
       COPYRIGHT_TEXT        = grunt.file.read('src/widget/copyright.frag'),
       WIDGET_RC             = '.widgetrc';
@@ -266,7 +268,7 @@ module.exports = function (grunt) {
             SPEC_HOME + '**/*_spec.js'
           ],
           junit: {
-            path: OKTA_HOME + JASMINE_TEST_FOLDER,
+            path: JASMINE_TEST_FOLDER,
             consolidate: true
           },
           display: grunt.option('display') || 'full',
@@ -358,10 +360,13 @@ module.exports = function (grunt) {
       all: [SASS + '/**/*.scss'],
       options: (function () {
         var conf = {
-          bundleExec: true,
           config: '.scss-lint.yml',
           reporterOutput: null,
-          maxBuffer: 'Infinite'
+          maxBuffer: 'Infinite',
+          exclude: [
+            'assets/sass/widgets/*.scss',
+            'assets/sass/common/**/*.scss'
+          ]
         };
         if (process.argv.indexOf('--checkstyle') > -1) {
           conf.reporterOutput = SCSSLINT_OUT_FILE;
