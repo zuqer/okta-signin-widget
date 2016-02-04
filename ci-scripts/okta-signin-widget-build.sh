@@ -1,5 +1,10 @@
-#!/bin/bash
-set +x
+#!/bin/bash -vx
+JOB_NAME=`basename $0`
+LOGDIRECTORY=/tmp/ci-builder
+mkdir -p $LOGDIRECTORY
+LOGFILE=$LOGDIRECTORY/$JOB_NAME.log
+exec > >(tee $LOGFILE)
+exec 2>&1
 set -e
 
 # Bacon does not pass a parameter, so default to the one we want (deploy)
