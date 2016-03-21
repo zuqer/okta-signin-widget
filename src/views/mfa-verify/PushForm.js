@@ -49,6 +49,18 @@ define(['okta'], function (Okta) {
         factorName: this.model.get('factorLabel'),
         deviceName: this.model.get('deviceName')
       });
+
+      var that = this;
+      if (that.enabled) {
+        window.setTimeout(function () {
+          if ($.cookie("justpush") === "true") {
+            var justpush = $('.custom-checkbox [name=justpush]');
+            justpush.click();
+            that.setSubmitState(false);
+            that.doSave();
+          };
+        }, 0);
+      }
     },
     setSubmitState: function (ableToSubmit) {
       var button = this.$el.find('.button');
@@ -75,8 +87,31 @@ define(['okta'], function (Okta) {
         this.trigger('save', this.model);
       }
     },
+
+    events : {
+      'change [name=justpush]' : 'checkboxChangeHandler'
+    },
+
+    checkboxChangeHandler : function () {
+      var justpush = $('.custom-checkbox [name=justpush]');
+      $.cookie("justpush", justpush[0].checked);
+    },
+
     showError: function (msg) {
       this.model.trigger('error', this.model, {responseJSON: {errorSummary: msg}});
+    },
+    inputs: function () {
+      var inputs = [
+        {
+          label: false,
+          placeholder: Okta.loc('justpush', 'login'),
+          name: 'justpush',
+          type: 'checkbox',
+          'label-top': false,
+          className: 'margin-btm-0'
+        }
+      ];
+      return inputs;
     }
   });
 });
