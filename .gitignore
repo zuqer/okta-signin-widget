@@ -8,6 +8,7 @@ build2
 .grunt
 .sass-cache
 .widgetrc
+.tsecor
 
 # These paths should be included in the published artifact, but not the repo
 dist
