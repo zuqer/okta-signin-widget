@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-/*jshint maxcomplexity:22,maxstatements:21 */
+/*jshint maxcomplexity:23,maxstatements:23 */
 define([
   'okta',
   'shared/util/Util',
@@ -104,6 +104,13 @@ function (Okta, Util, OAuth2Util, Enums, BrowserFeatures, Errors, ErrorCodes) {
       // get the id token from session token before calling the global success function.
       if (router.settings.get('oauth2Enabled')) {
         OAuth2Util.getIdToken(router.settings, {sessionToken: res.sessionToken});
+        return;
+      }
+
+      // account unlock success page
+      var lastRes = router.appState._previousAttributes.lastAuthResponse;
+      if (lastRes.status == 'RECOVERY' && lastRes.recoveryType === Enums.RECOVERY_TYPE_UNLOCK) {
+        router.navigate('signin/account-unlocked', {trigger: true});
         return;
       }
 
