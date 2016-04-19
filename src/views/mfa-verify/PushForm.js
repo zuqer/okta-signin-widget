@@ -10,7 +10,9 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-define(['okta'], function (Okta) {
+define(['okta',
+        'util/CookieUtil',
+], function (Okta, CookieUtil) {
 
   // deviceName is escaped on BaseForm (see BaseForm's template)
   var titleTpl = Okta.Handlebars.compile('{{factorName}} ({{{deviceName}}})');
@@ -29,6 +31,20 @@ define(['okta'], function (Okta) {
 
     initialize: function () {
       this.enabled = true;
+      this.listenTo(this.options.appState, 'change:isSuccessResponse',
+        function (state, isSuccessResponse) {
+          if (isSuccessResponse) {
+            var justpush = $('.custom-checkbox [name=justpush]');
+            if (justpush[0].checked) {
+              CookieUtil.setAutoPushCookie(state.get("username"), state.get("user").id);
+            } else {
+              CookieUtil.removeAutoPushCookie(state.get("username"), state.get("user").id);
+            }
+          } else {
+            CookieUtil.removeAutoPushCookie(state.get("username"), state.get("user").id);
+          }
+        }
+      );
       this.listenTo(this.options.appState, 'change:isMfaRejectedByUser',
         function (state, isMfaRejectedByUser) {
           this.setSubmitState(isMfaRejectedByUser);
@@ -53,7 +69,7 @@ define(['okta'], function (Okta) {
       var that = this;
       if (that.enabled) {
         window.setTimeout(function () {
-          if ($.cookie("justpush") === "true") {
+          if (CookieUtil.isAutoPushEnabled(that.options.appState.get("username"), that.options.appState.get("user").id)) {
             var justpush = $('.custom-checkbox [name=justpush]');
             justpush.click();
             that.setSubmitState(false);
@@ -86,15 +102,6 @@ define(['okta'], function (Okta) {
         this.listenToOnce(this.model, 'error', this.setSubmitState, true);
         this.trigger('save', this.model);
       }
-    },
-
-    events : {
-      'change [name=justpush]' : 'checkboxChangeHandler'
-    },
-
-    checkboxChangeHandler : function () {
-      var justpush = $('.custom-checkbox [name=justpush]');
-      $.cookie("justpush", justpush[0].checked);
     },
 
     showError: function (msg) {

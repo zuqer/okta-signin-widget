@@ -15,6 +15,7 @@ define(['okta', 'vendor/plugins/jquery.cookie'], function (Okta) {
   var $ = Okta.$;
   var LAST_USERNAME_COOKIE_NAME = 'ln';
   var REMEMBER_DEVICE_COOKIE_NAME = 'rdln';
+  var AUTO_PUSH_COOKIE_PREFIX  = 'auto_push_';
   var DAYS_SAVE_REMEMBER = 365;
 
   function removeCookie (name) {
@@ -52,6 +53,18 @@ define(['okta', 'vendor/plugins/jquery.cookie'], function (Okta) {
 
   fn.removeDeviceCookie = function () {
     removeCookie(REMEMBER_DEVICE_COOKIE_NAME);
+  };
+
+  fn.isAutoPushEnabled = function (username, userId) {
+    return $.cookie(AUTO_PUSH_COOKIE_PREFIX + userId) === "true";
+  };
+
+  fn.setAutoPushCookie = function (username, userId) {
+    setCookie(AUTO_PUSH_COOKIE_PREFIX + userId, true);
+  };
+
+  fn.removeAutoPushCookie = function (username, userId) {
+    removeCookie(AUTO_PUSH_COOKIE_PREFIX + userId);
   };
 
   return fn;
