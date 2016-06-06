@@ -127,6 +127,16 @@ module.exports = function (grunt) {
           }
         }
       },
+      courage: {
+        files: [
+          {expand: true, cwd: 'node_modules/@okta/courage/src/', src: ['**'], dest: JS + '/shared/'}
+        ]
+      },
+      'courage-vendor': {
+        files: [
+          {expand: true, cwd: 'node_modules/@okta/courage/src/vendor', src: ['**'], dest: JS + '/vendor/'}
+        ]
+      },
       'i18n-to-target': {
         files: [
           {
@@ -269,7 +279,7 @@ module.exports = function (grunt) {
     },
 
     exec: {
-      build: 'node buildtools/r.js -o target/js/build.js'
+      build: 'npm run build:webpack'
     },
 
     jasmine: {
@@ -421,7 +431,7 @@ module.exports = function (grunt) {
   });
 
   grunt.task.registerTask('prebuild', function (flag) {
-    var tasks = ['retire', 'copy:src', 'copy:i18n-to-target', 'copy:assets-to-target'];
+    var tasks = ['copy:src', 'copy:i18n-to-target', 'copy:assets-to-target', 'copy:courage', 'copy:courage-vendor'];
     if (flag === 'minified') {
       tasks.push('compass:minify');
     } else {

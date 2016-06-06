@@ -12,7 +12,7 @@
 
 
 
-define(['vendor/lib/q', 'jquery'], function(Q, $) {
+define(['q', 'jquery'], function(Q, $) {
 
 
 /* Base64.js

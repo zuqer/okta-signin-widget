@@ -12,7 +12,7 @@
 
 define([
   'underscore',
-  'shared/util/Bundles',
+  'util/Bundles',
   './countryCallingCodes'
 ],
 function (_, bundles, countryCallingCodes) {
