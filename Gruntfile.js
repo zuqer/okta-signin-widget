@@ -9,15 +9,13 @@ var packageJson = require('./package.json');
 module.exports = function (grunt) {
   /* jshint maxstatements: false */
 
-  var open        = require('open'),
-      Handlebars  = require('handlebars'),
+  var Handlebars  = require('handlebars'),
       _           = require('lodash');
 
   var JS                    = 'target/js',
       JASMINE_TEST_FOLDER   = 'build2/reports/jasmine',
       JASMINE_TEST_FILE     = JASMINE_TEST_FOLDER + '/login.html',
       JSHINT_OUT_FILE       = 'build2/loginjs-checkstyle-result.xml',
-      SPEC_HOME             = JS + '/test/spec/',
       DIST                  = 'dist',
       ASSETS                = 'assets/',
       SASS                  = ASSETS + 'sass',
@@ -279,7 +277,8 @@ module.exports = function (grunt) {
     },
 
     exec: {
-      build: 'npm run build:webpack'
+      build: 'npm run build:webpack',
+      'build-test': 'npm run build:test'
     },
 
     jasmine: {
@@ -288,33 +287,13 @@ module.exports = function (grunt) {
           keepRunner: true,
           outfile: JASMINE_TEST_FILE,
           specs: [
-            SPEC_HOME + '**/*_spec.js'
+            'dist/test/tests.js'
           ],
           junit: {
             path: JASMINE_TEST_FOLDER
           },
           display: grunt.option('display') || 'full',
-          summary: true, // show stack traces and errors
-          template: require('grunt-template-jasmine-requirejs'),
-          templateOptions: {
-            requireConfigFile: JS + '/require.config.js',
-            requireConfig: {
-              // baseUrl is relative to build2/reports/jasmine/login.html
-              baseUrl: '../../../' + JS,
-              deps: ['jquery', 'jasmine-jquery', 'vendor/common-signin'],
-              paths: {
-                spec: 'test/spec',
-                helpers: 'test/helpers',
-                sandbox: 'test/helpers/sandbox',
-                'jasmine-jquery': 'test/vendor/jasmine-jquery'
-              },
-              callback: function ($) {
-                $(function () {
-                  $('<div>').attr('id', 'sandbox').css({height: 1, overflow: 'hidden'}).appendTo('body');
-                });
-              }
-            }
-          }
+          summary: true // show stack traces and errors
         }
       }
     },
@@ -418,17 +397,9 @@ module.exports = function (grunt) {
     '`grunt btest`, run `grunt test:build` to copy your changed files ' +
     'and refresh the browser',
     function (build) {
-      grunt.task.run(['copy', 'jasmine:test' + (build ? ':build' : '')]);
+      grunt.task.run(['copy', 'exec:build-test', 'jasmine:test' + (build ? ':build' : '')]);
     }
   );
-
-  grunt.task.registerTask('open-jasmine-specs-in-browser', 'Runs a File Tests on Browser', function () {
-    open(JASMINE_TEST_FILE);
-  });
-
-  grunt.task.registerTask('btest', 'Runs Jasmine Unit Tests on Browser', function () {
-    grunt.task.run(['test:build', 'open-jasmine-specs-in-browser']);
-  });
 
   grunt.task.registerTask('prebuild', function (flag) {
     var tasks = ['copy:src', 'copy:i18n-to-target', 'copy:assets-to-target', 'copy:courage', 'copy:courage-vendor'];

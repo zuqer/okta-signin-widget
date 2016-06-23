@@ -202,7 +202,8 @@ function (Okta, FormController, Footer, PhoneTextBox, CountryUtil, FormType, Key
           placeholder: Okta.loc('mfa.phoneNumber.ext.placeholder', 'login'),
           className: 'enroll-call-extension',
           name: 'phoneExtension',
-          input: TextBox
+          input: TextBox,
+          type: 'text'
         }));
       }
       formChildren.push(
@@ -242,6 +243,7 @@ function (Okta, FormController, Footer, PhoneTextBox, CountryUtil, FormType, Key
           placeholder: Okta.loc('mfa.challenge.enterCode.placeholder', 'login'),
           name: 'passCode',
           input: TextBox,
+          type: 'text',
           params: {
             innerTooltip: Okta.loc('mfa.challenge.enterCode.tooltip', 'login')
           },

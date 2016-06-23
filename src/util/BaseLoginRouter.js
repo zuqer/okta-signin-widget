@@ -239,8 +239,10 @@ function (Okta, Backbone, xdomain, RefreshAuthStateController, Settings, Header,
         // if we get some other type of error which doesn't force a redirect,
         // we will probably be left in a bad state. I.e. old controller is
         // dropped and new controller is not rendered.
-        oldController.remove();
-        oldController.$el.remove();
+        if (oldController) {
+          oldController.remove();
+          oldController.$el.remove();
+        }
       })
       .done();
 
