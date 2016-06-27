@@ -50,10 +50,12 @@
     "normalize-url": "1.4.1",
     "open": "0.0.5",
     "request-promise": "2.0.0",
-    "semver": "5.1.0"
+    "semver": "5.1.0",
+    "webpack": "1.13.0"
   },
   "dependencies": {
-    "@okta/i18n": "1.22.0"
+    "@okta/i18n": "1.22.0",
+    "@okta/courage": "1.2.0-beta.25"
   },
   "optionalDependencies": {
     "@okta/ci-pkginfo": "1.2.0",

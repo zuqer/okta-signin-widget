@@ -31,6 +31,15 @@ module.exports = function (grunt) {
     });
   }
 
+  function removeFrom(json) {
+    _.each(json.dependencies, function (dependency) {
+      if (dependency.dependencies) {
+        removeFrom(dependency);
+      }
+      delete dependency.from;
+    });
+  }
+
   grunt.registerTask(
     'shrinkwrap-remove-resolved',
     'Runs shrinkwrap and removes resolved properties',
@@ -43,6 +52,7 @@ module.exports = function (grunt) {
       grunt.log.ok('Removing resolved fields');
       json = grunt.file.readJSON(SHRINKWRAP_FILE);
       removeResolved(json);
+      removeFrom(json);
 
       grunt.log.ok('Writing back to shrinkwrap');
       grunt.file.write(SHRINKWRAP_FILE, JSON.stringify(json, null, 2) + "\n");
