@@ -127,6 +127,16 @@ module.exports = function (grunt) {
           }
         }
       },
+      courage: {
+        files: [
+          {expand: true, cwd: 'node_modules/@okta/courage/src/', src: ['**'], dest: JS + '/shared/'}
+        ]
+      },
+      'courage-vendor': {
+        files: [
+          {expand: true, cwd: 'node_modules/@okta/courage/src/vendor', src: ['**'], dest: JS + '/vendor/'}
+        ]
+      },
       'i18n-to-target': {
         files: [
           {
@@ -269,7 +279,9 @@ module.exports = function (grunt) {
     },
 
     exec: {
-      build: 'node buildtools/r.js -o target/js/build.js'
+      'build-dev': 'npm run build:webpack-dev',
+      'build-prod': 'npm run build:webpack-prod',
+      'build-no-jquery': 'npm run build:webpack-no-jquery'
     },
 
     jasmine: {
@@ -420,7 +432,8 @@ module.exports = function (grunt) {
   });
 
   grunt.task.registerTask('prebuild', function (flag) {
-    var tasks = ['retire', 'copy:src', 'copy:i18n-to-target', 'copy:assets-to-target'];
+    var tasks = ['retire', 'copy:src', 'copy:i18n-to-target', 'copy:assets-to-target',
+      'copy:courage', 'copy:courage-vendor'];
     if (flag === 'minified') {
       tasks.push('compass:minify');
     } else {
@@ -433,11 +446,10 @@ module.exports = function (grunt) {
   grunt.task.registerTask('build', function (flag) {
     var tasks = [];
     if (flag === 'minified') {
-      tasks.push('prebuild:minified', 'json_generator:prod');
+      tasks.push('prebuild:minified', 'exec:build-prod');
     } else {
-      tasks.push('prebuild', 'json_generator:dev');
+      tasks.push('prebuild', 'exec:build-dev');
     }
-    tasks.push('exec');
     grunt.task.run(tasks);
   });
 
@@ -446,8 +458,8 @@ module.exports = function (grunt) {
     'Generates versioned assets and copies them to the dist/ dir',
     [
       'prebuild:minified',
-      'json_generator:prod', 'exec',
-      'json_generator:no-jquery', 'exec',
+      'exec:build-prod',
+      'exec:build-no-jquery',
       'rename', 'copy:assets-to-dist'
     ]
   );

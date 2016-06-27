@@ -20,6 +20,9 @@
     "test": "grunt test",
     "build:dev": "grunt build",
     "build:prod": "grunt build:minified",
+    "build:webpack-dev": "webpack --config webpack.dev.config.js",
+    "build:webpack-prod": "webpack --config webpack.prod.config.js",
+    "build:webpack-no-jquery": "webpack --config webpack.no-jquery.config.js",
     "prestart": "npm run build:dev",
     "start": "grunt start-server-open",
     "package": "grunt package",
@@ -55,7 +58,12 @@
   },
   "dependencies": {
     "@okta/i18n": "1.22.0",
-    "@okta/courage": "1.2.0-beta.25"
+    "@okta/courage": "1.2.0-beta.25",
+    "q": "1.4.1",
+    "jquery": "1.12.1",
+    "jquery.cookie": "1.4.1",
+    "backbone": "1.2.1",
+    "json-loader": "0.5.4"
   },
   "optionalDependencies": {
     "@okta/ci-pkginfo": "1.2.0",
