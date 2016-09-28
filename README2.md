@@ -306,82 +306,85 @@ The only required option is `baseUrl`. All others are optional.
 
 ### Basic config options
 
-- `baseUrl` (String) - The base URL for your Okta organization
+- `baseUrl` - The base URL for your Okta organization, i.e. 'https://acme.okta.com' or 'https://acme.oktapreview.com'.
 
-    Example: *"https://acme.okta.com"* or *"https://acme.oktapreview.com"*
+- `logo` - Local path or URL to a logo image that is displayed at the top of the Sign-In Widget, i.e. '/img/logo.png' or 'https://acme.com/img/logo.png'.
 
-- `logo` (String) - Local path or URL to a logo image that is displayed at the top of the Sign-In Widget
-
-    Example: *"/img/logo.png"* or *"https://acme.com/img/logo.png"*
-
-- `helpSupportNumber` (String) - Support phone number that is displayed in the Password Reset and Unlock Account flows. If no number is provided, no support screen is shown to the user.
-
-    Example: *"(123) 456-7890"*
+- `helpSupportNumber` - Support phone number that is displayed in the Password Reset and Unlock Account flows, i.e. '(123) 456-7890'. If no number is provided, no support screen is shown to the user.
 
 ### Language and text options
 
-- `language` (String) - Set the language of the widget. If no language is specified, the widget will choose a language based on the user's browser preferences if it is supported, or defaults to `en`.
+```javascript
+language: 'ja',
+assets: {
+  baseUrl: 'https://acme.com/assets',
+  rewrite: function (assetPath) {
+    return assetPath.replace('.jsonp', '.js');
+  }
+}
+```
 
-  Supported languages:
+- `language` - Set the language of the widget. If no language is specified, the widget will choose a language based on the user's browser preferences if it is supported, or defaults to `en`.
 
-  - `cs` - Czech
-  - `da` - Danish
-  - `de` - German
-  - `en` - English
-  - `es` - Spanish
-  - `fi` - Finnish
-  - `fr` - French
-  - `hu` - Hungarian
-  - `it` - Italian
-  - `ja` - Japanese
-  - `ko` - Korean
-  - `nl-NL` - Dutch
-  - `pt-BR` - Portuguese (Brazil)
-  - `ro` - Romanian
-  - `ru` - Russian
-  - `sv` - Swedish
-  - `th` - Thai
-  - `uk` - Ukrainian
-  - `zh-CN` - Chinese (PRC)
-  - `zh-TW` - Chinese (Taiwan)
+    Supported languages:
 
-  Example: `{language: 'ja'}`
+    - `cs` - Czech
+    - `da` - Danish
+    - `de` - German
+    - `en` - English
+    - `es` - Spanish
+    - `fi` - Finnish
+    - `fr` - French
+    - `hu` - Hungarian
+    - `it` - Italian
+    - `ja` - Japanese
+    - `ko` - Korean
+    - `nl-NL` - Dutch
+    - `pt-BR` - Portuguese (Brazil)
+    - `ro` - Romanian
+    - `ru` - Russian
+    - `sv` - Swedish
+    - `th` - Thai
+    - `uk` - Ukrainian
+    - `zh-CN` - Chinese (PRC)
+    - `zh-TW` - Chinese (Taiwan)
 
-- `i18n` (Object) - Override the text in the widget. The full list of properties can be found in the [login.properties](ADDLINKHERE) and [country.properties](ADDLINKHERE) files.
+    Example: `{language: 'ja'}`
 
-    ```javascript
-    // The i18n config object maps language codes to a hash of property keys ->
-    // property values.
-    i18n: {
-      // Overriding English properties
-      'en': {
-        'primaryauth.title': 'Sign in to Acme',
-        'primaryauth.username.placeholder': 'Your Acme Username'
-      },
-      // Overriding Japanese properties
-      'ja': {
-        'primaryauth.title': 'ACMEにサインイン',
-        'primaryauth.username.placeholder': 'ACMEのユーザー名'
-      }
+- `i18n` - Override the text in the widget. The full list of properties can be found in the [login.properties](ADDLINKHERE) and [country.properties](ADDLINKHERE) files.
+
+  ```javascript
+  // The i18n config object maps language codes to a hash of property keys ->
+  // property values.
+  i18n: {
+    // Overriding English properties
+    'en': {
+      'primaryauth.title': 'Sign in to Acme',
+      'primaryauth.username.placeholder': 'Your Acme Username'
+    },
+    // Overriding Japanese properties
+    'ja': {
+      'primaryauth.title': 'ACMEにサインイン',
+      'primaryauth.username.placeholder': 'ACMEのユーザー名'
     }
+  }
 
-    // If you want to override any properties in the country.properties file,
-    // you will need to prefix the name with "country.":
-    i18n: {
-      'en': {
-        // login.properties keys do not have a special prefix
-        'primaryAuth.title': 'Sign in to Acme',
+  // If you want to override any properties in the country.properties file,
+  // you will need to prefix the name with "country.":
+  i18n: {
+    'en': {
+      // login.properties keys do not have a special prefix
+      'primaryAuth.title': 'Sign in to Acme',
 
-        // country.properties keys are prefixed with 'country.'
-        'country.AF': 'Afghanistan, edited',
-        'country.AL': 'Albania, edited'
-      }
+      // country.properties keys are prefixed with 'country.'
+      'country.AF': 'Afghanistan, edited',
+      'country.AL': 'Albania, edited'
     }
-    ```
+  }
+  ```
 
-- `assets`
 
-  - `baseUrl` (String) - Override the base url the widget pulls its language files from. The widget is only packaged with english text by default, and loads other languages on demand from the Okta CDN. If you want to serve the language files from your own hosting solution, update this setting.
+- `assets.baseUrl` (String) - Override the base url the widget pulls its language files from. The widget is only packaged with english text by default, and loads other languages on demand from the Okta CDN. If you want to serve the language files from your own hosting solution, update this setting.
 
     ```javascript
     // Loading the assets from a path on the current domain
@@ -397,7 +400,7 @@ The only required option is `baseUrl`. All others are optional.
 
     **Note:** The jsonp files can be accessed from the `dist/labels/jsonp` folder that is published in the [npm module](https://www.npmjs.com/package/@okta/okta-signin-widget).
 
-  - `rewrite` (Function) - You can use this function to rewrite the asset path and filename. Use this function if you will host the asset files on your own host, and plan to change the path or filename of hte assets. This is useful, for example, if you want to cachebust the files.
+  - `assets.rewrite` (Function) - You can use this function to rewrite the asset path and filename. Use this function if you will host the asset files on your own host, and plan to change the path or filename of hte assets. This is useful, for example, if you want to cachebust the files.
 
     ```javascript
     assets: {
@@ -414,11 +417,11 @@ The only required option is `baseUrl`. All others are optional.
 
 ### Hooks around username and password
 
-- `(String) username` - Prefills the username input with the provided username
+- `username` - Prefills the username input with the provided username
 
     Example: *"john@acme.com"*
 
-- `(Function) transformUsername` - Transforms the username before sending the auth request to Okta. This is useful when you have an internal mapping between what the user enters and their Okta username.
+- `transformUsername` - Transforms the username before sending the auth request to Okta. This is useful when you have an internal mapping between what the user enters and their Okta username.
 
     ```javascript
     // Passed two arguments - username and operation:
@@ -436,7 +439,7 @@ The only required option is `baseUrl`. All others are optional.
     }
     ```
 
-- `(Function) processCreds` - Synchronous hook to handle the credentials before they are sent to Okta in the Primary Auth, Password Expiration, and Password Reset flows.
+- `processCreds` - Synchronous hook to handle the credentials before they are sent to Okta in the Primary Auth, Password Expiration, and Password Reset flows.
 
     ```javascript
     // Passed a creds object {username, password}
@@ -474,11 +477,10 @@ helpLinks: {
 }
 ```
 
-- `helpLinks`
-  - `(String) help` - Custom link href for the "Help" link
-  - `(String) forgotPassword` - Custom link href for the "Forgot Password" link
-  - `(String) unlock` - Custom link href for the "Unlock Account" link. **Note:** `features.selfServiceUnlock` must be set to `true`, and the self service unlock feature must be enabled in your admin settings.
-  - `(Array) custom` - Array of custom link objects that will be added to the "Need help signing in?" section.
+- `helpLinks.help` - Custom link href for the "Help" link
+- `helpLinks.forgotPassword` - Custom link href for the "Forgot Password" link
+- `helpLinks.unlock` - Custom link href for the "Unlock Account" link. **Note:** `features.selfServiceUnlock` must be set to `true`, and the self service unlock feature must be enabled in your admin settings.
+- `helpLinks.custom` - Array of custom link objects that will be added to the "Need help signing in?" section.
 
 ### Feature flags
 
@@ -492,15 +494,14 @@ features: {
 }
 ```
 
-- `features`
-  - `(Boolean) router` - Set to `true` if you want the widget to update the navigation bar when it transitions between pages. This is useful if you want the user to maintain their current state when refreshing the page, but requires that your server can handle the widget url paths. Defaults to `false`.
-  - `(Boolean) rememberMe` - Display a checkbox to enable "Remember me" functionality at login. Defaults to `true`.
-  - `(Boolean) autoPush` - Display a checkbox to enable "Send push automatically" functionality in the MFA challenge flow. Defaults to `false`.
-  - `(Boolean) smsRecovery` - Allow users with a configured mobile phone number to recover their password using an SMS message. Defaults to `false`.
-  - `(Boolean) callRecovery` - Allow users with a configured mobile phone number to recover their password using a voice call. Defaults to `false`.
-  - `(Boolean) windowsVerify` - Display instructions for enrolling a windows device with Okta Verify. Defaults to `false`.
-  - `(Boolean) selfServiceUnlock` - Display the "Unlock Account" link to allow users to unlock their accounts. Defaults to `false`.
-  - `(Boolean) multiOptionalFactorEnroll` - Allow users to enroll in multiple optional factors before finishing the auth flow. Default behavior is to force enrollment of all required factors and skip optional factors. Defaults to `false`.
+- `features.router` - Set to `true` if you want the widget to update the navigation bar when it transitions between pages. This is useful if you want the user to maintain their current state when refreshing the page, but requires that your server can handle the widget url paths. Defaults to `false`.
+- `features.rememberMe` - Display a checkbox to enable "Remember me" functionality at login. Defaults to `true`.
+- `features.autoPush` - Display a checkbox to enable "Send push automatically" functionality in the MFA challenge flow. Defaults to `false`.
+- `features.smsRecovery` - Allow users with a configured mobile phone number to recover their password using an SMS message. Defaults to `false`.
+- `features.callRecovery` - Allow users with a configured mobile phone number to recover their password using a voice call. Defaults to `false`.
+- `features.windowsVerify` - Display instructions for enrolling a windows device with Okta Verify. Defaults to `false`.
+- `features.selfServiceUnlock` - Display the "Unlock Account" link to allow users to unlock their accounts. Defaults to `false`.
+- `features.multiOptionalFactorEnroll` - Allow users to enroll in multiple optional factors before finishing the auth flow. Default behavior is to force enrollment of all required factors and skip optional factors. Defaults to `false`.
 
 
 ### Social auth, oidc
