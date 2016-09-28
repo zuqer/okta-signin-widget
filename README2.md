@@ -414,11 +414,11 @@ The only required option is `baseUrl`. All others are optional.
 
 ### Hooks around username and password
 
-- `username :: String` - Prefills the username input with the provided username
+- `(String) username` - Prefills the username input with the provided username
 
     Example: *"john@acme.com"*
 
-- `transformUsername :: Function` - Transforms the username before sending the auth request to Okta. This is useful when you have an internal mapping between what the user enters and their Okta username.
+- `(Function) transformUsername` - Transforms the username before sending the auth request to Okta. This is useful when you have an internal mapping between what the user enters and their Okta username.
 
     ```javascript
     // Passed two arguments - username and operation:
@@ -436,7 +436,7 @@ The only required option is `baseUrl`. All others are optional.
     }
     ```
 
-- `processCreds :: Function` - Synchronous hook to handle the credentials before they are sent to Okta in the Primary Auth, Password Expiration, and Password Reset flows.
+- `(Function) processCreds` - Synchronous hook to handle the credentials before they are sent to Okta in the Primary Auth, Password Expiration, and Password Reset flows.
 
     ```javascript
     // Passed a creds object {username, password}
@@ -475,10 +475,10 @@ helpLinks: {
 ```
 
 - `helpLinks`
-  - `help :: String` - Custom link href for the "Help" link
-  - `forgotPassword :: String` - Custom link href for the "Forgot Password" link
-  - `unlock :: String` - Custom link href for the "Unlock Account" link. **Note:** `features.selfServiceUnlock` must be set to `true`, and the self service unlock feature must be enabled in your admin settings.
-  - `custom :: Array` - Array of custom link objects that will be added to the "Need help signing in?" section.
+  - `(String) help` - Custom link href for the "Help" link
+  - `(String) forgotPassword` - Custom link href for the "Forgot Password" link
+  - `(String) unlock` - Custom link href for the "Unlock Account" link. **Note:** `features.selfServiceUnlock` must be set to `true`, and the self service unlock feature must be enabled in your admin settings.
+  - `(Array) custom` - Array of custom link objects that will be added to the "Need help signing in?" section.
 
 ### Feature flags
 
@@ -493,14 +493,14 @@ features: {
 ```
 
 - `features`
-  - `router :: Boolean` - Set to `true` if you want the widget to update the navigation bar when it transitions between pages. This is useful if you want the user to maintain their current state when refreshing the page, but requires that your server can handle the widget url paths. Defaults to `false`.
-  - `rememberMe :: Boolean` - Display a checkbox to enable "Remember me" functionality at login. Defaults to `true`.
-  - `autoPush :: Boolean` - Display a checkbox to enable "Send push automatically" functionality in the MFA challenge flow. Defaults to `false`.
-  - `smsRecovery :: Boolean` - Allow users with a configured mobile phone number to recover their password using an SMS message. Defaults to `false`.
-  - `callRecovery :: Boolean` - Allow users with a configured mobile phone number to recover their password using a voice call. Defaults to `false`.
-  - `windowsVerify :: Boolean` - Display instructions for enrolling a windows device with Okta Verify. Defaults to `false`.
-  - `selfServiceUnlock :: Boolean` - Display the "Unlock Account" link to allow users to unlock their accounts. Defaults to `false`.
-  - `multiOptionalFactorEnroll :: Boolean` - Allow users to enroll in multiple optional factors before finishing the auth flow. Default behavior is to force enrollment of all required factors and skip optional factors. Defaults to `false`.
+  - `(Boolean) router` - Set to `true` if you want the widget to update the navigation bar when it transitions between pages. This is useful if you want the user to maintain their current state when refreshing the page, but requires that your server can handle the widget url paths. Defaults to `false`.
+  - `(Boolean) rememberMe` - Display a checkbox to enable "Remember me" functionality at login. Defaults to `true`.
+  - `(Boolean) autoPush` - Display a checkbox to enable "Send push automatically" functionality in the MFA challenge flow. Defaults to `false`.
+  - `(Boolean) smsRecovery` - Allow users with a configured mobile phone number to recover their password using an SMS message. Defaults to `false`.
+  - `(Boolean) callRecovery` - Allow users with a configured mobile phone number to recover their password using a voice call. Defaults to `false`.
+  - `(Boolean) windowsVerify` - Display instructions for enrolling a windows device with Okta Verify. Defaults to `false`.
+  - `(Boolean) selfServiceUnlock` - Display the "Unlock Account" link to allow users to unlock their accounts. Defaults to `false`.
+  - `(Boolean) multiOptionalFactorEnroll` - Allow users to enroll in multiple optional factors before finishing the auth flow. Default behavior is to force enrollment of all required factors and skip optional factors. Defaults to `false`.
 
 
 ### Social auth, oidc
