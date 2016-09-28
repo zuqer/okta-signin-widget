@@ -2,10 +2,7 @@
 
 # Okta Sign-In Widget
 
-
-- https://www.npmjs.com/package/browserify
-- https://www.npmjs.com/package/request
-- https://www.npmjs.com/package/chalk
+Some intro text, and links to the getting started guide and sdks.
 
 ## Table of Contents
 
@@ -21,10 +18,6 @@
     - Styles
     - labels, css
 - Developing the sign-in-widget
-
-INSERT SOME LINK HERE TO THE EXISTING DEVELOPER DOCUMENTATION
-
----
 
 ## Install
 
@@ -114,17 +107,13 @@ After running `npm install`:
     var signIn = new OktaSignIn(/* configOptions */);
     ```
 
-## Usage
+## API
 
----
-
-### API
-
-#### new OktaSignIn(config)
+### new OktaSignIn(config)
 
 Creates a new instance of the Sign-In Widget with the given config options. The widget has many config options to customize and change its behavior, which you can read about [here][ENTER_LINK_HERE]. The only required option to get started is `baseUrl`, the base url for your Okta domain.
 
-##### Example
+#### Example
 
 ```javascript
 var signIn = new OktaSignIn({
@@ -133,7 +122,7 @@ var signIn = new OktaSignIn({
 });
 ```
 
-#### renderEl(options, success, error)
+### renderEl(options, success, error)
 
 Renders the widget to the DOM, and passes control back to your app through the success and error callback functions when the user has entered a success or fail state.
 
@@ -142,7 +131,7 @@ Renders the widget to the DOM, and passes control back to your app through the s
 - `success` {Function(Object res)} - Called when the user has successfully entered a final auth state. The function is invoked with a `res` object that will contain a `status` property, and additional metadata that depends on the type of response.
 - `error` {Function(Error err)} - Called when the widget has been bootstrapped with invalid config options, or has entered a state it cannot recover from (i.e. the user is using an unsupported browser).
 
-##### Example
+#### Example
 
 ```javascript
 signIn.renderEl(
@@ -179,7 +168,7 @@ signIn.renderEl(
 );
 ```
 
-#### session.get(callback)
+### session.get(callback)
 
 Gets the active session information, or returns `{status:inactive}` on error or no active session.
 
@@ -207,13 +196,13 @@ signIn.session.get(function (res) {
 });
 ```
 
-#### session.refresh(callback)
+### session.refresh(callback)
 
 Refresh the current session by extending its lifetime. This can be used as a keep-alive operation.
 
 - callback {Function (Object res)} - Called with the current session response after the refresh request has completed.
 
-##### Example
+#### Example
 
 ```javascript
 signIn.session.refresh(function (res) {
@@ -226,14 +215,13 @@ signIn.session.refresh(function (res) {
 });
 ```
 
-
-#### session.close(callback)
+### session.close(callback)
 
 Signs the user out of their current Okta session. The callback will be invoked once the session has been closed.
 
 - callback {Function (String err)} - Called once the session has been closed. If there is an error, it will be passed to the callback function.
 
-##### Example
+#### Example
 
 ```javascript
 signIn.session.close(function (err) {
@@ -246,7 +234,7 @@ signIn.session.close(function (err) {
 });
 ```
 
-#### token.hasTokensInUrl()
+### token.hasTokensInUrl()
 
 Synchronous method to check for access or id tokens in the url. Returns `true` if there are tokens, and `false` if the redirect flow has not taken place yet.
 
@@ -265,7 +253,7 @@ Parses the access or id tokens from the url after a successful .
 
 **Note:** This is used when configuring the Sign-In Widget with Social Auth and the OAuth redirect flow.
 
-##### Example
+#### Example
 
 ```javascript
 var signIn = new OktaSignIn({
@@ -313,23 +301,22 @@ else {
 }
 ```
 
-#### idToken.refresh()
+### idToken.refresh()
 
 -- ADD STUFF HERE
 
-#### tokenManager.stuff()...
+### tokenManager.stuff()...
 
 -- ADD STUFF HERE
 
----
 
-### Config
+## Config
 
 The only required option is `baseUrl`. All others are optional.
 
 -- ADD A BASIC EXAMPLE HERE WITH SOME OF THE STUFF BELOW --
 
-#### Basic config options
+### Basic config options
 
 - `baseUrl` (String) - The base URL for your Okta organization
 
@@ -343,7 +330,7 @@ The only required option is `baseUrl`. All others are optional.
 
     Example: *"(123) 456-7890"*
 
-#### Language and text options
+### Language and text options
 
 - `language` (String) - Set the language of the widget. If no language is specified, the widget will choose a language based on the user's browser preferences if it is supported, or defaults to `en`.
 
@@ -437,7 +424,7 @@ The only required option is `baseUrl`. All others are optional.
     }
     ```
 
-#### Hooks around username and password
+### Hooks around username and password
 
 - `username` (String) - Prefills the username input with the provided username
 
@@ -476,7 +463,7 @@ The only required option is `baseUrl`. All others are optional.
     }
     ```
 
-#### Customizing help links
+### Customizing help links
 
 You can override the link urls on the Primary Auth page by setting the following config options. If you'd like to change the text, use the `i18n` config option.
 
@@ -505,7 +492,7 @@ helpLinks: {
   - `unlock` (String) - Custom link href for the "Unlock Account" link. **Note:** `features.selfServiceUnlock` must be set to `true`, and the self service unlock feature must be enabled in your admin settings.
   - `custom` (Array) - Array of custom link objects that will be added to the "Need help signing in?" section.
 
-#### Feature flags
+### Feature flags
 
 Enable or disable widget functionality with the following options. **Note:** Some of these features require additional configuration in your Okta admin settings.
 
@@ -528,7 +515,7 @@ features: {
   - `multiOptionalFactorEnroll` (Boolean) - Allow users to enroll in multiple optional factors before finishing the auth flow. Default behavior is to force enrollment of all required factors and skip optional factors. Defaults to `false`.
 
 
-#### Social auth, oidc
+### Social auth, oidc
 
 - `authScheme`
 - `authParams`
@@ -542,10 +529,9 @@ features: {
 - `idpDisplay`
 - `oAuthTimeout`
 
-#### Bootstrapping from a recovery token
+### Bootstrapping from a recovery token
 
 - `recoveryToken`
 
----
 
-### Developing the Sign-In Widget
+## Developing the Sign-In Widget
