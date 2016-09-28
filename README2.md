@@ -113,8 +113,6 @@ After running `npm install`:
 
 Creates a new instance of the Sign-In Widget with the given config options. The widget has many config options to customize and change its behavior, which you can read about [here][ENTER_LINK_HERE]. The only required option to get started is `baseUrl`, the base url for your Okta domain.
 
-#### Example
-
 ```javascript
 var signIn = new OktaSignIn({
   baseUrl: 'https://{{myorg}}.okta.com',
@@ -130,8 +128,6 @@ Renders the widget to the DOM, and passes control back to your app through the s
   - `el` {String} - A css selector for the container element to attach the widget to
 - `success` {Function(Object res)} - Called when the user has successfully entered a final auth state. The function is invoked with a `res` object that will contain a `status` property, and additional metadata that depends on the type of response.
 - `error` {Function(Error err)} - Called when the widget has been bootstrapped with invalid config options, or has entered a state it cannot recover from (i.e. the user is using an unsupported browser).
-
-#### Example
 
 ```javascript
 signIn.renderEl(
@@ -202,8 +198,6 @@ Refresh the current session by extending its lifetime. This can be used as a kee
 
 - callback {Function (Object res)} - Called with the current session response after the refresh request has completed.
 
-#### Example
-
 ```javascript
 signIn.session.refresh(function (res) {
   if (res.status === 'ACTIVE') {
@@ -220,8 +214,6 @@ signIn.session.refresh(function (res) {
 Signs the user out of their current Okta session. The callback will be invoked once the session has been closed.
 
 - callback {Function (String err)} - Called once the session has been closed. If there is an error, it will be passed to the callback function.
-
-#### Example
 
 ```javascript
 signIn.session.close(function (err) {
@@ -240,11 +232,9 @@ Synchronous method to check for access or id tokens in the url. Returns `true` i
 
 **Note:** This is used when configuring the Sign-In Widget with Social Auth and the OAuth redirect flow.
 
-##### Example
-
 See the example in `token.parseTokensFromUrl`.
 
-#### token.parseTokensFromUrl(success, error)
+### token.parseTokensFromUrl(success, error)
 
 Parses the access or id tokens from the url after a successful .
 
@@ -252,8 +242,6 @@ Parses the access or id tokens from the url after a successful .
 - `error` {Function (Error err)} Called if an error occurs while trying to parse or validate the tokens
 
 **Note:** This is used when configuring the Sign-In Widget with Social Auth and the OAuth redirect flow.
-
-#### Example
 
 ```javascript
 var signIn = new OktaSignIn({
@@ -426,11 +414,11 @@ The only required option is `baseUrl`. All others are optional.
 
 ### Hooks around username and password
 
-- `username (string)` - Prefills the username input with the provided username
+- `username :: String` - Prefills the username input with the provided username
 
     Example: *"john@acme.com"*
 
-- `transformUsername (function)` - Transforms the username before sending the auth request to Okta. This is useful when you have an internal mapping between what the user enters and their Okta username.
+- `transformUsername :: Function` - Transforms the username before sending the auth request to Okta. This is useful when you have an internal mapping between what the user enters and their Okta username.
 
     ```javascript
     // Passed two arguments - username and operation:
@@ -448,7 +436,7 @@ The only required option is `baseUrl`. All others are optional.
     }
     ```
 
-- `processCreds (function)` - Synchronous hook to handle the credentials before they are sent to Okta in the Primary Auth, Password Expiration, and Password Reset flows.
+- `processCreds :: Function` - Synchronous hook to handle the credentials before they are sent to Okta in the Primary Auth, Password Expiration, and Password Reset flows.
 
     ```javascript
     // Passed a creds object {username, password}
@@ -487,10 +475,10 @@ helpLinks: {
 ```
 
 - `helpLinks`
-  - `help (string)` - Custom link href for the "Help" link
-  - `forgotPassword (string)` - Custom link href for the "Forgot Password" link
-  - `unlock (string)` - Custom link href for the "Unlock Account" link. **Note:** `features.selfServiceUnlock` must be set to `true`, and the self service unlock feature must be enabled in your admin settings.
-  - `custom (array)` - Array of custom link objects that will be added to the "Need help signing in?" section.
+  - `help :: String` - Custom link href for the "Help" link
+  - `forgotPassword :: String` - Custom link href for the "Forgot Password" link
+  - `unlock :: String` - Custom link href for the "Unlock Account" link. **Note:** `features.selfServiceUnlock` must be set to `true`, and the self service unlock feature must be enabled in your admin settings.
+  - `custom :: Array` - Array of custom link objects that will be added to the "Need help signing in?" section.
 
 ### Feature flags
 
@@ -505,14 +493,14 @@ features: {
 ```
 
 - `features`
-  - `router (boolean)` - Set to `true` if you want the widget to update the navigation bar when it transitions between pages. This is useful if you want the user to maintain their current state when refreshing the page, but requires that your server can handle the widget url paths. Defaults to `false`.
-  - `rememberMe (boolean)` - Display a checkbox to enable "Remember me" functionality at login. Defaults to `true`.
-  - `autoPush (boolean)` - Display a checkbox to enable "Send push automatically" functionality in the MFA challenge flow. Defaults to `false`.
-  - `smsRecovery (boolean)` - Allow users with a configured mobile phone number to recover their password using an SMS message. Defaults to `false`.
-  - `callRecovery (boolean)` - Allow users with a configured mobile phone number to recover their password using a voice call. Defaults to `false`.
-  - `windowsVerify (boolean)` - Display instructions for enrolling a windows device with Okta Verify. Defaults to `false`.
-  - `selfServiceUnlock (boolean)` - Display the "Unlock Account" link to allow users to unlock their accounts. Defaults to `false`.
-  - `multiOptionalFactorEnroll (boolean)` - Allow users to enroll in multiple optional factors before finishing the auth flow. Default behavior is to force enrollment of all required factors and skip optional factors. Defaults to `false`.
+  - `router :: Boolean` - Set to `true` if you want the widget to update the navigation bar when it transitions between pages. This is useful if you want the user to maintain their current state when refreshing the page, but requires that your server can handle the widget url paths. Defaults to `false`.
+  - `rememberMe :: Boolean` - Display a checkbox to enable "Remember me" functionality at login. Defaults to `true`.
+  - `autoPush :: Boolean` - Display a checkbox to enable "Send push automatically" functionality in the MFA challenge flow. Defaults to `false`.
+  - `smsRecovery :: Boolean` - Allow users with a configured mobile phone number to recover their password using an SMS message. Defaults to `false`.
+  - `callRecovery :: Boolean` - Allow users with a configured mobile phone number to recover their password using a voice call. Defaults to `false`.
+  - `windowsVerify :: Boolean` - Display instructions for enrolling a windows device with Okta Verify. Defaults to `false`.
+  - `selfServiceUnlock :: Boolean` - Display the "Unlock Account" link to allow users to unlock their accounts. Defaults to `false`.
+  - `multiOptionalFactorEnroll :: Boolean` - Allow users to enroll in multiple optional factors before finishing the auth flow. Default behavior is to force enrollment of all required factors and skip optional factors. Defaults to `false`.
 
 
 ### Social auth, oidc
