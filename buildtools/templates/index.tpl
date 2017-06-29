@@ -15,6 +15,21 @@
   <script src="js/okta-sign-in.js"></script>
   <script type="text/javascript">
     var options = {{{options}}};
+        options["features.registration"] = true;
+        options.registration = {
+          /*'preRender': function(data, callback){
+              var profileSchema = data.profileSchema;
+              profileSchema.properties.address = {
+                'type': 'string',
+                'description': 'Street Address',
+                'default': 'Enter your street address',
+                'maxLength': 255
+              };
+              profileSchema.fieldOrder.push('address');
+              callback(data);
+          },*/
+          'clientId': '0oaor6qTC00YrklIP0g3'
+        };
     var signIn = new OktaSignIn(options);
 
     signIn.renderEl(

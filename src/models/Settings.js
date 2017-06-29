@@ -137,7 +137,9 @@ function (Okta, Q, Errors, BrowserFeatures, Util, Logger, OAuth2Util, config) {
       'customButtons': ['array', false, []],
 
       //Registration
-      'registration.click': 'function'
+      'registration.click': 'function',
+      'registration.clientId': 'string',
+      'registration.preRender': 'function'
     },
 
     derived: {

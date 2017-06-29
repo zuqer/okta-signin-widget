@@ -627,9 +627,16 @@ function (_, $, TemplateUtil, StringUtil, BaseView,
         var validationErrors = ErrorParser.parseFieldErrors(resp);
         if (_.size(validationErrors)) {
           _.each(validationErrors, function (errors, field) {
-            this.model.trigger('form:field-error', this.__errorFields[field] || field, _.map(errors, function (error) {
-              return (/^model\.validation/).test(error) ? StringUtil.localize(error) : error;
-            }));
+            if (this.model._events.parseFieldLevelErrors) {
+              //TODO expose this as a override method similar to parseFieldErrorMessage
+              this.model.trigger('parseFieldLevelErrors', {'field': this.__errorFields[field] || field, 'errorToken': errors[0]}, _.bind(function(errorMessage){
+                this.model.trigger('form:field-error', field, [errorMessage]);
+              }, this));
+            } else {
+              this.model.trigger('form:field-error ', this.__errorFields[field] || field, _.map(errors, function (error) {
+                return (/^model\.validation/).test(error) ? StringUtil.localize(error) : error;
+              }));
+            }
           }, this);
         }
         else {

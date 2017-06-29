@@ -1,142 +1,181 @@
-/* eslint max-params: [2, 17], max-statements:[2, 33] */
+/* eslint max-params:[2, 28], max-statements:[2, 40], camelcase:0, max-len:[2, 180] */
 define([
-  'vendor/lib/q',
   'okta/underscore',
-  'okta/jquery',
-  '@okta/okta-auth-js/jquery',
-  'helpers/mocks/Util',
-  'helpers/util/Expect',
-  'helpers/dom/Beacon',
-  'helpers/dom/RegistrationForm',
-  'LoginRouter',
-  'sandbox'
+  'models/RegistrationSchema',
+  'helpers/util/Expect'
 ],
-function (Q, _, $, OktaAuth, Util, Expect, Beacon, RegistrationForm, Router, $sandbox) {
+function (_, RegistrationSchema, Expect) {
 
-  var itp = Expect.itp;
+  Expect.describe('RegistrationSchema', function () {
 
-  function setup(settings) {
-    settings || (settings = {});
-    var setNextResponse = Util.mockAjax();
-    var baseUrl = 'https://foo.com';
-    var authClient = new OktaAuth({url: baseUrl});
-    var successSpy = jasmine.createSpy('success');
-    var router = new Router(_.extend({
-      el: $sandbox,
-      baseUrl: baseUrl,
-      authClient: authClient,
-      globalSuccessFn: successSpy
-    }, settings));
-    var form = new RegistrationForm($sandbox);
-    var beacon = new Beacon($sandbox);
-    Util.registerRouter(router);
-    Util.mockRouterNavigate(router);
-    router.register();
-    return Expect.waitForRegistration({
-      router: router,
-      form: form,
-      beacon: beacon,
-      ac: authClient,
-      setNextResponse: setNextResponse
-    });
-  }
+    Expect.describe('properties', function () {
 
-  Expect.describe('Registration', function () {
+      Expect.describe('string field', function () {
+        beforeEach(function () {
+          this.schema = new RegistrationSchema({
+            profileSchema: {
+              'properties': {
+                'stringfield': {
+                  'type': 'string',
+                  'description': 'The description',
+                  'minLength': 2,
+                  'maxLength': 10
+                }
+              }
+            }
+          }, {parse:true});
+        });
 
-    Expect.describe('settings', function () {
-      itp('uses default title', function () {
-        return setup().then(function (test) {
-          expect(test.form.titleText()).toEqual('Create Account');
+        it('only has one property', function () {
+          expect(this.schema.properties.length).toEqual(1);
         });
-      });
-      itp('uses default for submit', function () {
-        return setup().then(function (test) {
-          expect(test.form.submitButtonText()).toEqual('Register');
-        });
-      });
-    });
 
-    Expect.describe('elements', function () {
-      itp('has a firstname field', function () {
-        return setup().then(function (test) {
-          var firstname = test.form.firstnameField();
-          expect(firstname.length).toBe(1);
-          expect(firstname.attr('type')).toEqual('text');
+        it('has a correct name', function () {
+          expect(this.schema.properties.first().get('name')).toEqual('stringfield');
         });
-      });
-      itp('has a lastname field', function () {
-        return setup().then(function (test) {
-          var lastname = test.form.lastnameField();
-          expect(lastname.length).toBe(1);
-          expect(lastname.attr('type')).toEqual('text');
-        });
-      });
-      itp('has a email field', function () {
-        return setup().then(function (test) {
-          var email = test.form.emailField();
-          expect(email.length).toBe(1);
-          expect(email.attr('type')).toEqual('text');
-        });
-      });
-      itp('has a password field', function () {
-        return setup().then(function (test) {
-          var password = test.form.passwordField();
-          expect(password.length).toBe(1);
-          expect(password.attr('type')).toEqual('password');
-        });
-      });
-    });
 
-    Expect.describe('events', function () {
-      itp('shows an error if email is empty and register', function () {
-        return setup().then(function (test) {
-          test.form.submit();
-          expect(test.form.emailErrorField().length).toBe(1);
+        it('is a string type', function () {
+          expect(this.schema.properties.first().get('type')).toEqual('string');
         });
-      });
-      itp('shows an error if firstname is too long', function () {
-        return setup().then(function (test) {
-          test.form.setFirstname(Util.LoremIpsum);
-          test.form.submit();
-          expect(test.form.firstnameErrorField().length).toBe(1);
-        });
-      });
-    });
 
-    Expect.describe('password complexity', function () {
-      itp('shows password complexities unsatisfied', function () {
-        return setup().then(function (test) {
-          expect(test.form.hasPasswordComplexityUnsatisfied('minLength')).toBe(true);
-          expect(test.form.hasPasswordComplexityUnsatisfied('minLowerCase')).toBe(true);
-          expect(test.form.hasPasswordComplexityUnsatisfied('minUpperCase')).toBe(true);
-          expect(test.form.hasPasswordComplexityUnsatisfied('minNumber')).toBe(true);
-          expect(test.form.hasPasswordComplexityUnsatisfied('excludeUsername')).toBe(true);
+        it('has a correct description', function () {
+          expect(this.schema.properties.first().get('description')).toEqual('The description');
+        });
+
+        it('has a correct minLength', function () {
+          expect(this.schema.properties.first().get('minLength')).toEqual(2);
+        });
+
+        it('has a correct maxLength', function () {
+          expect(this.schema.properties.first().get('maxLength')).toEqual(10);
+        });
+
+        it('does not have format', function () {
+          expect(this.schema.properties.first().get('format')).toBeUndefined();
         });
       });
-      itp('shows password complexity satisfied if it is satisfied', function () {
-        return setup().then(function (test) {
-          test.form.setPassword('Abcd');
-          expect(test.form.hasPasswordComplexityUnsatisfied('minLength')).toBe(true);
-          expect(test.form.hasPasswordComplexitySatisfied('minLowerCase')).toBe(true);
-          expect(test.form.hasPasswordComplexitySatisfied('minUpperCase')).toBe(true);
-          expect(test.form.hasPasswordComplexityUnsatisfied('minNumber')).toBe(true);
-          expect(test.form.hasPasswordComplexityUnsatisfied('excludeUsername')).toBe(true);
+
+      Expect.describe('email field', function () {
+        beforeEach(function () {
+          this.schema = new RegistrationSchema({
+            profileSchema: {
+              'properties': {
+                'emailfield': {
+                  'type': 'string',
+                  'format': 'email'
+                }
+              }
+            }
+          }, {parse:true});
+        });
+
+        it('is a string type', function () {
+          expect(this.schema.properties.first().get('type')).toEqual('string');
+        });
+
+        it('have a correct format', function () {
+          expect(this.schema.properties.first().get('format')).toEqual('email');
         });
       });
-      itp('shows password complexity error if focus out and not satisfied', function () {
-        return setup().then(function (test) {
-          test.form.setEmail('User');
-          test.form.setPassword('12345678');
-          test.form.focusOutPassword();
-          expect(test.form.hasPasswordComplexitySatisfied('minLength')).toBe(true);
-          expect(test.form.hasPasswordComplexityError('minLowerCase')).toBe(true);
-          expect(test.form.hasPasswordComplexityError('minUpperCase')).toBe(true);
-          expect(test.form.hasPasswordComplexitySatisfied('minNumber')).toBe(true);
-          expect(test.form.hasPasswordComplexitySatisfied('excludeUsername')).toBe(true);
+
+      Expect.describe('enum field', function () {
+        beforeEach(function () {
+          this.schema = new RegistrationSchema({
+            profileSchema: {
+              'properties': {
+                'fruit': {
+                  'type': 'string',
+                  'enum': ['Apple', 'Banana', 'Cherry']
+                }
+              }
+            }
+          }, {parse:true});
+        });
+
+        it('is a string type', function () {
+          expect(this.schema.properties.first().get('type')).toEqual('string');
+        });
+
+        it('have a correct enum', function () {
+          expect(this.schema.properties.first().get('enum')).toEqual(['Apple', 'Banana', 'Cherry']);
+        });
+      });
+
+      Expect.describe('required fields', function () {
+        beforeEach(function () {
+          this.schema = new RegistrationSchema({
+            profileSchema: {
+              'properties': {
+                'field1': {
+                  'type': 'string'
+                },
+                'field2': {
+                  'type': 'string'
+                },
+                'field3': {
+                  'type': 'string'
+                }
+              },
+              'required': ['field3', 'field1'],
+            }
+          }, {parse:true});
+        });
+
+        it('has 3 properties', function () {
+          expect(this.schema.properties.length).toEqual(3);
+        });
+
+        it('field1 is required', function () {
+          expect(this.schema.properties.get('field1').get('required')).toBe(true);
+          expect(this.schema.properties.createModelProperties()['field1'].required).toBe(true);
+        });
+
+        it('field2 is not required', function () {
+          expect(this.schema.properties.get('field2').get('required')).toBe(false);
+          expect(this.schema.properties.createModelProperties()['field2'].required).toBe(false);
+        });
+
+        it('field3 is required', function () {
+          expect(this.schema.properties.get('field3').get('required')).toBe(true);
+        });
+      });
+
+      Expect.describe('sorting order', function () {
+        beforeEach(function () {
+          this.schema = new RegistrationSchema({
+            profileSchema: {
+              'properties': {
+                'field3': {
+                  'type': 'string'
+                },
+                'field6': {
+                  'type': 'string'
+                },
+                'field2': {
+                  'type': 'string'
+                },
+                'field1': {
+                  'type': 'string'
+                },
+                'field5': {
+                  'type': 'string'
+                }
+              },
+              'fieldOrder': ['field5', 'field2', 'field6', 'field3', 'field1'],
+            }
+          }, {parse:true});
+        });
+
+        it('has 5 properties', function () {
+          expect(this.schema.properties.length).toEqual(5);
+        });
+
+        it('have a correct sort order', function () {
+          var order = this.schema.properties.pluck('name');
+          expect(order).toEqual(['field5', 'field2', 'field6', 'field3', 'field1']);
         });
       });
     });
 
   });
-
 });
