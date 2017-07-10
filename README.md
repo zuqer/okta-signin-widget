@@ -1094,3 +1094,4 @@ The `.widgetrc` file is a configuration file that saves your local widget settin
 | `npm run build:release` | Build a minified, uglified version of the widget |
 | `npm test` | Run unit tests |
 | `npm run lint` | Run jshint and scss linting tests |
+
