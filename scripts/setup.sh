@@ -17,12 +17,12 @@ if ! bundle install; then
   exit ${FAILED_SETUP}
 fi
 
-if ! npm install --no-optional --unsafe-perm; then
-  echo "npm install failed! Exiting..."
+if ! yarn install --ignore-optional; then
+  echo "yarn install failed! Exiting..."
   exit ${FAILED_SETUP}
 fi
 
-if ! npm run build:release; then
-  echo "npm build release failed! Exiting..."
+if ! yarn run build:release; then
+  echo "yarn build release failed! Exiting..."
   exit ${FAILED_SETUP}
 fi

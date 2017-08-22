@@ -1057,6 +1057,8 @@ Events published by the widget. Subscribe to these events using [on](#onevent-ca
 
 # Developing the Sign-In Widget
 
+We use Yarn as our node dependency manager. If you don't know what Yarn is, please check its [website](https://yarnpkg.com).
+
 ## Building the widget
 
 1. Clone this repo and navigate to the new `okta-signin-widget` folder.
@@ -1072,10 +1074,10 @@ Events published by the widget. Subscribe to these events using [on](#onevent-ca
     [okta-signin-widget]$ bundle install
     ```
 
-3. Install our Node dependencies.
+3. [Install Yarn](https://yarnpkg.com/en/docs/install) if you don't already have it, and then install our Node dependencies.
 
     ```bash
-    [okta-signin-widget]$ npm install
+    [okta-signin-widget]$ yarn install
     ```
 
 4. Create a `.widgetrc` file in the `okta-signin-widget` directory with an entry for `baseUrl`.
@@ -1109,8 +1111,8 @@ The `.widgetrc` file is a configuration file that saves your local widget settin
 
 | Command | Description |
 | --- | --- |
-| `npm start` | Build the widget, start the server, and open a browser window with the widget loaded |
-| `npm run build:dev` | Build an unminified version of the widget |
-| `npm run build:release` | Build a minified, uglified version of the widget |
-| `npm test` | Run unit tests |
-| `npm run lint` | Run jshint and scss linting tests |
+| `yarn start` | Build the widget, start the server, and open a browser window with the widget loaded |
+| `yarn run build:dev` | Build an unminified version of the widget |
+| `yarn run build:release` | Build a minified, uglified version of the widget |
+| `yarn test` | Run unit tests |
+| `yarn run lint` | Run jshint and scss linting tests |
