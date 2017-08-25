@@ -5,12 +5,9 @@ cd ${OKTA_HOME}/${REPO}
 setup_service grunt
 setup_service bundler
 
-# Use newer, faster npm
-npm install -g npm@4.0.2
-
 # Install required dependencies
-npm install -g @okta/ci-update-package
-npm install -g @okta/ci-pkginfo
+yarn install -g @okta/ci-update-package
+yarn install -g @okta/ci-pkginfo
 
 if ! bundle install; then
   echo "bundle install failed! Exiting..."
