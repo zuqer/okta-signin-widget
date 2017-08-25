@@ -9,8 +9,8 @@ setup_service bundler
 npm install -g npm@4.0.2
 
 # Install required dependencies
-yarn install -g @okta/ci-update-package
-yarn install -g @okta/ci-pkginfo
+yarn global add @okta/ci-update-package
+yarn global add @okta/ci-pkginfo
 
 if ! bundle install; then
   echo "bundle install failed! Exiting..."
