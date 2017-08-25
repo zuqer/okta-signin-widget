@@ -5,6 +5,9 @@ cd ${OKTA_HOME}/${REPO}
 setup_service grunt
 setup_service bundler
 
+# Use newer, faster npm
+npm install -g npm@4.0.2
+
 # Install required dependencies
 yarn install -g @okta/ci-update-package
 yarn install -g @okta/ci-pkginfo
