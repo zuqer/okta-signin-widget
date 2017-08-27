@@ -26,3 +26,5 @@ if ! yarn run build:release; then
   echo "yarn build release failed! Exiting..."
   exit ${FAILED_SETUP}
 fi
+
+export REGISTRY="${REGISTRY:-'https://artifacts.aue1d.saasure.com/artifactory/api/npm/npm-okta'}"
