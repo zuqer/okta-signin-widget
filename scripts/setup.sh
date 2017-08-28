@@ -7,7 +7,7 @@ setup_service bundler
 
 # Use newer, faster yarn
 curl -o- -L https://yarnpkg.com/install.sh | bash
-yum install yarn
+export PATH="$PATH:`yarn global bin`"
 
 # Install required dependencies
 yarn global add @okta/ci-update-package
