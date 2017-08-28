@@ -10,8 +10,8 @@ export BACON_ARTIFACT_PATH=$(basename ${ARTIFACT_DIR})
 
 pushd ${OKTA_HOME}/${REPO}/${BACON_ARTIFACT_PATH} > /dev/null
 
-# Use newer, faster npm
-npm install -g npm@4.0.2
+# Use newer, faster yarn
+npm install --global yarn
 
 # Install required dependencies
 yarn global add @okta/ci-update-package
