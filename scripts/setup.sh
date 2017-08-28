@@ -9,7 +9,7 @@ setup_service bundler
 wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
 curl -o- -L https://yarnpkg.com/install.sh | bash
 export PATH="$PATH:`yarn global bin`"
-yum install yarn
+yes | yum install yarn
 
 # Install required dependencies
 yarn global add @okta/ci-update-package
@@ -20,7 +20,7 @@ if ! bundle install; then
   exit ${FAILED_SETUP}
 fi
 
-if ! gnome-terminal -e yarn install --ignore-optional --verbose; then
+if ! yarn install --ignore-optional --verbose; then
   echo "yarn install failed! Exiting..."
   exit ${FAILED_SETUP}
 fi
