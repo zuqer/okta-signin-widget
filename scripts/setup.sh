@@ -9,7 +9,7 @@ setup_service bundler
 wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
 curl -o- -L https://yarnpkg.com/install.sh | bash
 export PATH="$PATH:`yarn global bin`"
-yes | yum install yarn
+yes | yum -y install yarn
 
 # Install required dependencies
 yarn global add @okta/ci-update-package
