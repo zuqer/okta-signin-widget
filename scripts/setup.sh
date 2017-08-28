@@ -6,7 +6,7 @@ setup_service grunt
 setup_service bundler
 
 # Use newer, faster yarn
-sudo yum install yarn
+yum install yarn
 
 # Install required dependencies
 yarn global add @okta/ci-update-package
