@@ -18,7 +18,7 @@ if ! bundle install; then
   exit ${FAILED_SETUP}
 fi
 
-if ! yarn install --ignore-optional --verbose; then
+if ! gnome-terminal -e yarn install --ignore-optional --verbose; then
   echo "yarn install failed! Exiting..."
   exit ${FAILED_SETUP}
 fi
