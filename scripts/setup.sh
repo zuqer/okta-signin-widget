@@ -5,7 +5,7 @@ cd ${OKTA_HOME}/${REPO}
 setup_service grunt
 setup_service bundler
 
-echo "registry \"https://artifacts.aue1d.saasure.com/artifactory/api/npm/npm-okta-master\"" >> /root/.yarnrc
+yarn config set registry https://artifacts.aue1d.saasure.com/artifactory/api/npm/npm-okta-master//
 
 # Use newer, faster yarn
 wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
