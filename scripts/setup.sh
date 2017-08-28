@@ -5,13 +5,7 @@ cd ${OKTA_HOME}/${REPO}
 setup_service grunt
 setup_service bundler
 
-echo "prefix=/home/vagrant/.npm-global
-progress=false
-cafile=/home/vagrant/Okta-Root-CA.pem
-strict-ssl=true
-@okta:registry=https://artifacts.aue1d.saasure.com/artifactory/api/npm/npm-okta
-registry=https://artifacts.aue1d.saasure.com/artifactory/api/npm/npm-okta-master
-phantomjs_cdnurl=https://artifacts.aue1d.saasure.com/artifactory/thirdparty/ariya/phantomjs" >> /root/.yarnrc
+echo "registry \"https://artifacts.aue1d.saasure.com/artifactory/api/npm/npm-okta-master\"" >> /root/.yarnrc
 
 # Use newer, faster yarn
 wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
