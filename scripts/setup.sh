@@ -6,8 +6,7 @@ setup_service grunt
 setup_service bundler
 
 # Use newer, faster yarn
-wget https://dl.yarnpkg.com/rpm/yarn.repo -O /etc/yum.repos.d/yarn.repo
-yes | yum install yarn
+curl -o- -L https://yarnpkg.com/install.sh | bash
 
 # Install required dependencies
 yarn global add @okta/ci-update-package
