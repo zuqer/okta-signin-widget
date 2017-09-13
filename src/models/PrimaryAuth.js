@@ -150,7 +150,12 @@ function (Okta, BaseLoginModel, CookieUtil, Enums) {
         authClient.options.headers['X-Device-Fingerprint'] = this.get('deviceFingerprint');
       }
       return func(signInArgs)
+      .then(function (transaction){
+        // TODO delegate to hooks.primaryAuth.onResult
+        return transaction;
+      })
       .fin(function () {
+        // TODO delegate to hooks.primaryAuth.onResult
         if (deviceFingerprintEnabled) {
           delete authClient.options.headers['X-Device-Fingerprint'];
         }

@@ -15,6 +15,13 @@
   <script src="js/okta-sign-in.js"></script>
   <script type="text/javascript">
     var options = {{{options}}};
+    options.hooks = {
+      primaryAuth: {
+        postRender: function foo() {
+          debugger
+        }
+      }
+    }
     var signIn = new OktaSignIn(options);
 
     signIn.renderEl(

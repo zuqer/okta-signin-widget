@@ -64,6 +64,10 @@ function (Okta, Q, Errors, BrowserFeatures, Util, Logger, OAuth2Util, config) {
       'logoText' : ['string', false],
       'helpSupportNumber': 'string',
 
+      'hooks.primaryAuth.beforeSubmit': 'function',
+      'hooks.primaryAuth.postRender': 'function',
+      'hooks.primaryAuth.onResult': 'function',
+
       // FEATURES
       'features.router': ['boolean', true, false],
       'features.securityImage': ['boolean', true, false],

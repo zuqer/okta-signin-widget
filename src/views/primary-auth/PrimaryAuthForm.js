@@ -123,6 +123,13 @@ define([
       return inputs;
     },
 
+    postRender: function() {
+      var handler = this.settings.get('hooks.primaryAuth.postRender');
+      if (handler) {
+        handler.call(this);
+      }
+    },
+
     focus: function () {
       if (!this.model.get('username')) {
         this.getInputs().first().focus();
