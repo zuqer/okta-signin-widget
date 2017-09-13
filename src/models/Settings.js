@@ -64,6 +64,9 @@ function (Okta, Q, Errors, BrowserFeatures, Util, Logger, OAuth2Util, config) {
       'logoText' : ['string', false],
       'helpSupportNumber': 'string',
 
+      'primaryAuth.postRender': 'function',
+      'primaryAuth.onTransaction': 'function',
+
       // FEATURES
       'features.router': ['boolean', true, false],
       'features.securityImage': ['boolean', true, false],
