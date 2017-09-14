@@ -90,7 +90,7 @@ module.exports = function (grunt) {
           {
             expand: true,
             cwd: 'assets/',
-            src: ['sass/**/*', 'font/**/*', 'img/**/*'],
+            src: ['sass/**/*', 'font/**/*', 'img/**/*', 'particles.json', 'particles.js'],
             dest: 'target/'
           },
 
@@ -141,7 +141,7 @@ module.exports = function (grunt) {
           process: function (content) {
             var template = Handlebars.compile(content),
                 options = _.extend({
-                  baseUrl: 'http://rain.okta1.com:1802',
+                  baseUrl: 'http://dev-foo.okta1.com:1802',
                   logo: '/img/logo_widgico.png',
                   logoText: 'Windico',
                   features: {
@@ -305,7 +305,7 @@ module.exports = function (grunt) {
         }())
       }
     },
-  
+
     search: {
       noAbsoluteUrlsInCss: {
         files: {

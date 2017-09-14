@@ -147,30 +147,21 @@ function (Okta, BaseLoginModel, CookieUtil, Enums, Q) {
     doPrimaryAuth: function (authClient, deviceFingerprintEnabled, signInArgs, func) {
       // Add the custom header for fingerprint if needed, and then remove it afterwards
       // Since we only need to send it for primary auth
+      var model = this;
       if (deviceFingerprintEnabled) {
         authClient.options.headers['X-Device-Fingerprint'] = this.get('deviceFingerprint');
       }
-      var onResultHandler = self.settings.get('hooks.primaryAuth.onResult');
+      var onResultHandler = this.settings.get('hooks.primaryAuth.onResult');
       return func(signInArgs)
       .then(function (transaction){
         if (!onResultHandler) {
           return transaction;
         }
-        if (onResultHandler.length !== 2) {
-          return onResultHandler();
-        }
-        return Q.Promise(function(resolve, reject) {
-          onResultHandler(null, function(err) {
-            if (err) {
-              return reject(err);
-            }
-            resolve(transaction);
-          });
-        });
+        return onResultHandler.call(model, null, transaction);
       })
       .fail(function(err) {
         if (onResultHandler) {
-          return onResultHandler(err);
+          return onResultHandler.call(model, err);
         }
         throw err;
       })

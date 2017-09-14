@@ -123,6 +123,10 @@ define([
       return inputs;
     },
 
+    // preRender: function() {
+    //   debugger
+    // },
+
     postRender: function() {
       var handler = this.settings.get('hooks.primaryAuth.postRender');
       if (handler) {
