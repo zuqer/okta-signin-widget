@@ -14,9 +14,10 @@ define([
   'okta',
   './BaseLoginModel',
   'util/CookieUtil',
-  'util/Enums'
+  'util/Enums',
+  'vendor/lib/q'
 ],
-function (Okta, BaseLoginModel, CookieUtil, Enums) {
+function (Okta, BaseLoginModel, CookieUtil, Enums, Q) {
 
   var _ = Okta._;
 
@@ -149,10 +150,29 @@ function (Okta, BaseLoginModel, CookieUtil, Enums) {
       if (deviceFingerprintEnabled) {
         authClient.options.headers['X-Device-Fingerprint'] = this.get('deviceFingerprint');
       }
+      var onResultHandler = self.settings.get('hooks.primaryAuth.onResult');
       return func(signInArgs)
       .then(function (transaction){
-        // TODO delegate to hooks.primaryAuth.onResult
-        return transaction;
+        if (!onResultHandler) {
+          return transaction;
+        }
+        if (onResultHandler.length !== 2) {
+          return onResultHandler();
+        }
+        return Q.Promise(function(resolve, reject) {
+          onResultHandler(null, function(err) {
+            if (err) {
+              return reject(err);
+            }
+            resolve(transaction);
+          });
+        });
+      })
+      .fail(function(err) {
+        if (onResultHandler) {
+          return onResultHandler(err);
+        }
+        throw err;
       })
       .fin(function () {
         // TODO delegate to hooks.primaryAuth.onResult
