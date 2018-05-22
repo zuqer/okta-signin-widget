@@ -46,6 +46,9 @@ define(['vendor/lib/q', 'okta/jquery'], function (Q, $) {
       }
 
       function onMessageReceivedFromOkta(event) {
+        if (event.source !== $iframe[0].contentWindow) {
+          return;
+        }
         if (!event || !event.data || event.origin != oktaDomainUrl) {
           handleError('no data');
           return;
