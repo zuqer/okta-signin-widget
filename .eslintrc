@@ -10,8 +10,7 @@
   },
   "globals": {
     "spyOnEvent": false,
-    "JSON": true,
-    "DEBUG": true
+    "JSON": true
   },
   "rules": {
     "camelcase": 2,
