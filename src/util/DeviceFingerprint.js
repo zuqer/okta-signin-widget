@@ -41,7 +41,7 @@ define(['vendor/lib/q', 'okta/jquery'], function (Q, $) {
       }
 
       function handleError(reason) {
-        removeIframe();
+        //removeIframe();
         deferred.reject(reason);
       }
 
@@ -65,8 +65,9 @@ define(['vendor/lib/q', 'okta/jquery'], function (Q, $) {
         }
       }
 
+      var win;
       function sendMessageToOkta(message) {
-        var win = $iframe[0].contentWindow;
+        win = $iframe[0].contentWindow;
         if (win) {
           win.postMessage(JSON.stringify(message), oktaDomainUrl);
         }
@@ -74,8 +75,11 @@ define(['vendor/lib/q', 'okta/jquery'], function (Q, $) {
 
       // Attach listener
       window.addEventListener('message', onMessageReceivedFromOkta, false);
-      // Load devicefingerprint page inside the iframe
-      $iframe.attr('src', oktaDomainUrl + '/auth/services/devicefingerprint');
+      if (!win) {
+        // Load devicefingerprint page inside the iframe
+        $iframe.attr('src', oktaDomainUrl + '/auth/services/devicefingerprint');  
+      }
+      
 
       return deferred.promise;
     }
