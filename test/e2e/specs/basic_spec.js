@@ -39,12 +39,19 @@ describe('Basic flows', function() {
 
     // Ensure a new widget can be created
     function createWidget() {
+      options.i18n = {
+        en: {
+          'primaryauth.title': 'Sign in to Acme'
+        }
+      };
+      oktaSignIn = new OktaSignIn(options);
       oktaSignIn.renderEl({
         el: '#okta-login-container'
       }, function() {});
     }
     browser.executeScript(createWidget);
     expect(el.isDisplayed()).toBe(true);
+    expect(signInTitle.getText()).toBe('Sign In to Acme');
   });
 
 });
