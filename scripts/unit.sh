@@ -5,6 +5,8 @@ source $OKTA_HOME/$REPO/scripts/setup.sh
 export TEST_SUITE_TYPE="junit"
 export TEST_RESULT_FILE_DIR="${REPO}/build2/reports/jasmine"
 
+setup_service yarn 1.7.0
+
 if ! yarn test; then
   echo "unit failed! Exiting..."
   exit ${TEST_FAILURE}
