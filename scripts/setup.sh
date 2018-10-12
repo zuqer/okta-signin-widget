@@ -4,6 +4,7 @@ cd ${OKTA_HOME}/${REPO}
 
 setup_service grunt
 setup_service bundler
+setup_service node v8.11.1
 setup_service yarn 1.7.0
 
 # Install required dependencies
