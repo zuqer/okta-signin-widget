@@ -6,8 +6,6 @@ REGISTRY="${ARTIFACTORY_URL}/api/npm/npm-okta"
 
 export TEST_SUITE_TYPE="build"
 
-setup_service yarn 1.7.0
-
 if [ -n "$action_branch" ];
 then
   echo "Publishing from bacon task using branch $action_branch"
