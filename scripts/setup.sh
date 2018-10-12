@@ -6,7 +6,7 @@ setup_service grunt
 setup_service bundler
 setup_service yarn 1.7.0
 
-yarn config set strict-ssl false
+yarn config set cafile /root/Okta-Root-CA.pem
 
 # Install required dependencies
 yarn global add  @okta/ci-update-package
