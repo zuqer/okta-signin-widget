@@ -3,6 +3,7 @@ define([
   'q',
   '@okta/okta-auth-js/jquery',
   'util/Util',
+  'util/RedirectUtil',
   'okta',
   'helpers/mocks/Util',
   'helpers/dom/AuthContainer',
@@ -28,13 +29,12 @@ define([
   'helpers/xhr/PASSWORDLESS_UNAUTHENTICATED',
   'sandbox'
 ],
-function (Q, OktaAuth, LoginUtil, Okta, Util, AuthContainer, PrimaryAuthForm, Beacon, PrimaryAuth,
+function (Q, OktaAuth, LoginUtil, RedirectUtil, Okta, Util, AuthContainer, PrimaryAuthForm, Beacon, PrimaryAuth,
   Router, BrowserFeatures, Errors, DeviceFingerprint, TypingUtil, Expect, resSecurityImage,
   resSecurityImageFail, resSuccess, resUnauthenticated, resLockedOut, resPwdExpired, resUnauthorized,
   resNonJson, resInvalidText, resThrottle, resPasswordlessUnauthenticated, $sandbox) {
 
   var { _, $ } = Okta;
-  var SharedUtil = Okta.internal.util.Util;
   var itp = Expect.itp;
   var tick = Expect.tick;
 
@@ -408,13 +408,13 @@ function (Q, OktaAuth, LoginUtil, Okta, Util, AuthContainer, PrimaryAuthForm, Be
       });
       itp('has the correct help link url', function () {
         return setup().then(function (test) {
-          spyOn(SharedUtil, 'redirect');
+          spyOn(RedirectUtil, 'setWindowLocationTo');
           expect(test.form.helpLinkHref()).toBe('https://foo.com/help/login');
         });
       });
       itp('has a custom help link url when available', function () {
         return setup({ 'helpLinks.help': 'https://bar.com' }).then(function (test) {
-          spyOn(SharedUtil, 'redirect');
+          spyOn(RedirectUtil, 'setWindowLocationTo');
           expect(test.form.helpLinkHref()).toBe('https://bar.com');
         });
       });
@@ -470,15 +470,15 @@ function (Q, OktaAuth, LoginUtil, Okta, Util, AuthContainer, PrimaryAuthForm, Be
       });
       itp('navigates to custom forgot password page when available', function () {
         return setup({ 'helpLinks.forgotPassword': 'https://foo.com' }).then(function (test) {
-          spyOn(SharedUtil, 'redirect');
+          spyOn(RedirectUtil, 'setWindowLocationTo');
           test.form.helpFooter().click();
           test.form.forgotPasswordLink().click();
-          expect(SharedUtil.redirect).toHaveBeenCalledWith('https://foo.com');
+          expect(RedirectUtil.setWindowLocationTo).toHaveBeenCalledWith('https://foo.com');
         });
       });
       itp('does not navigate to custom forgot password page when link disabled and clicked', function () {
         return setup({ 'helpLinks.forgotPassword': 'https://foo.com' }).then(function (test) {
-          spyOn(SharedUtil, 'redirect');
+          spyOn(RedirectUtil, 'setWindowLocationTo');
           test.form.setUsername('testuser');
           test.form.setPassword('pass');
           test.setNextResponse(resSuccess);
@@ -487,7 +487,7 @@ function (Q, OktaAuth, LoginUtil, Okta, Util, AuthContainer, PrimaryAuthForm, Be
         }).then(function (test) {
           test.form.helpFooter().click();
           test.form.forgotPasswordLink().click();
-          expect(SharedUtil.redirect).not.toHaveBeenCalledWith('https://foo.com');
+          expect(RedirectUtil.setWindowLocationTo).not.toHaveBeenCalledWith('https://foo.com');
         });
       });
       itp('unlock link is hidden on load', function () {
@@ -528,10 +528,10 @@ function (Q, OktaAuth, LoginUtil, Okta, Util, AuthContainer, PrimaryAuthForm, Be
           'helpLinks.unlock': 'https://foo.com',
           'features.selfServiceUnlock': true
         }).then(function (test) {
-          spyOn(SharedUtil, 'redirect');
+          spyOn(RedirectUtil, 'setWindowLocationTo');
           test.form.helpFooter().click();
           test.form.unlockLink().click();
-          expect(SharedUtil.redirect).toHaveBeenCalledWith('https://foo.com');
+          expect(RedirectUtil.setWindowLocationTo).toHaveBeenCalledWith('https://foo.com');
         });
       });
       itp('does not navigate to custom unlock page when link disabled and clicked', function () {
@@ -539,7 +539,7 @@ function (Q, OktaAuth, LoginUtil, Okta, Util, AuthContainer, PrimaryAuthForm, Be
           'helpLinks.unlock': 'https://foo.com',
           'features.selfServiceUnlock': true
         }).then(function (test) {
-          spyOn(SharedUtil, 'redirect');
+          spyOn(RedirectUtil, 'setWindowLocationTo');
           test.form.setUsername('testuser');
           test.form.setPassword('pass');
           test.setNextResponse(resSuccess);
@@ -548,7 +548,7 @@ function (Q, OktaAuth, LoginUtil, Okta, Util, AuthContainer, PrimaryAuthForm, Be
         }).then(function (test) {
           test.form.helpFooter().click();
           test.form.unlockLink().click();
-          expect(SharedUtil.redirect).not.toHaveBeenCalledWith('https://foo.com');
+          expect(RedirectUtil.setWindowLocationTo).not.toHaveBeenCalledWith('https://foo.com');
         });
       });
       itp('does not show unlock link if feature is off', function () {
@@ -2124,15 +2124,15 @@ function (Q, OktaAuth, LoginUtil, Okta, Util, AuthContainer, PrimaryAuthForm, Be
         });
       });
       itp('navigate to "/sso/idp/:id" at none OIDC mode when an idp button is clicked', function () {
-        spyOn(SharedUtil, 'redirect');
+        spyOn(RedirectUtil, 'setWindowLocationTo');
         const opt = {
           relayState: '/oauth2/v1/authorize/redirect?okta_key=FTAUUQK8XbZi0h2MyEDnBFTLnTFpQGqfNjVnirCXE0U',
         };
 
         return setupSocialNoneOIDCMode(opt).then(function (test) {
           test.form.facebookButton().click();
-          expect(SharedUtil.redirect.calls.count()).toBe(1);
-          expect(SharedUtil.redirect).toHaveBeenCalledWith(
+          expect(RedirectUtil.setWindowLocationTo.calls.count()).toBe(1);
+          expect(RedirectUtil.setWindowLocationTo).toHaveBeenCalledWith(
             'https://foo.com/sso/idps/0oaidiw9udOSceD1234?' +
             $.param({fromURI: '/oauth2/v1/authorize/redirect?okta_key=FTAUUQK8XbZi0h2MyEDnBFTLnTFpQGqfNjVnirCXE0U'})
           );

@@ -1,8 +1,8 @@
 /* eslint max-params:[2, 14] */
 define([
-  'okta',
   '@okta/okta-auth-js/jquery',
   'util/Util',
+  'util/RedirectUtil',
   'helpers/mocks/Util',
   'helpers/dom/EnrollCustomFactorForm',
   'helpers/dom/Beacon',
@@ -15,9 +15,9 @@ define([
   'helpers/xhr/NO_PERMISSION_error',
   'helpers/xhr/SUCCESS'
 ],
-function (Okta,
-  OktaAuth,
+function (OktaAuth,
   LoginUtil,
+  RedirectUtil,
   Util,
   Form,
   Beacon,
@@ -30,7 +30,6 @@ function (Okta,
   resNoPermissionError,
   responseSuccess) {
   
-  var SharedUtil = Okta.internal.util.Util;
   var itp = Expect.itp;
   var tick = Expect.tick;
 
@@ -107,14 +106,14 @@ function (Okta,
         });
 
         itp('redirects to third party when Enroll button is clicked', function () {
-          spyOn(SharedUtil, 'redirect');
+          spyOn(RedirectUtil, 'setWindowLocationTo');
           return setup().then(function (test) {
             test.setNextResponse([responseMfaEnrollActivateCustomSaml, responseSuccess]);
             test.form.submit();
-            return Expect.waitForSpyCall(SharedUtil.redirect);
+            return Expect.waitForSpyCall(RedirectUtil.setWindowLocationTo);
           })
             .then(function () {
-              expect(SharedUtil.redirect).toHaveBeenCalledWith(
+              expect(RedirectUtil.setWindowLocationTo).toHaveBeenCalledWith(
                 'http://rain.okta1.com:1802/policy/mfa-saml-idp-redirect?okta_key=mfa.redirect.id'
               );
             });
@@ -154,14 +153,14 @@ function (Okta,
         });
 
         itp('redirects to third party when Enroll button is clicked', function () {
-          spyOn(SharedUtil, 'redirect');
+          spyOn(RedirectUtil, 'setWindowLocationTo');
           return setup(true).then(function (test) {
             test.setNextResponse([responseMfaEnrollActivateCustomOidc, responseSuccess]);
             test.form.submit();
-            return Expect.waitForSpyCall(SharedUtil.redirect);
+            return Expect.waitForSpyCall(RedirectUtil.setWindowLocationTo);
           })
             .then(function () {
-              expect(SharedUtil.redirect).toHaveBeenCalledWith(
+              expect(RedirectUtil.setWindowLocationTo).toHaveBeenCalledWith(
                 'http://rain.okta1.com:1802/policy/mfa-oidc-idp-redirect?okta_key=mfa.redirect.id'
               );
             });

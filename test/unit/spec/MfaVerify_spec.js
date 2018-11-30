@@ -4,6 +4,7 @@ define([
   'q',
   'duo',
   '@okta/okta-auth-js/jquery',
+  'util/RedirectUtil',
   'util/Util',
   'helpers/mocks/Util',
   'helpers/dom/MfaVerifyForm',
@@ -47,6 +48,7 @@ function (Okta,
   Q,
   Duo,
   OktaAuth,
+  RedirectUtil,
   LoginUtil,
   Util,
   MfaVerifyForm,
@@ -87,7 +89,6 @@ function (Okta,
   labelsCountryJa) {
 
   var { _, $ } = Okta;
-  var SharedUtil = Okta.internal.util.Util;
   var itp = Expect.itp;
   var tick = Expect.tick;
   var factors = {
@@ -534,7 +535,7 @@ function (Okta,
           function () {
             return setupSecurityQuestion({ signOutLink: 'http://www.goodbye.com' })
               .then(function (test) {
-                spyOn(SharedUtil, 'redirect');
+                spyOn(RedirectUtil, 'setWindowLocationTo');
                 $.ajax.calls.reset();
                 test.setNextResponse(resSuccess);
                 test.form.signoutLink($sandbox).click();
@@ -548,7 +549,7 @@ function (Okta,
                     stateToken: 'testStateToken'
                   }
                 });
-                expect(SharedUtil.redirect).toHaveBeenCalledWith('http://www.goodbye.com');
+                expect(RedirectUtil.setWindowLocationTo).toHaveBeenCalledWith('http://www.goodbye.com');
               });
           });
 
@@ -3081,14 +3082,14 @@ function (Okta,
           });
         });
         itp('redirects to third party when Verify button is clicked', function () {
-          spyOn(SharedUtil, 'redirect');
+          spyOn(RedirectUtil, 'setWindowLocationTo');
           return setupCustomSAMLFactor().then(function (test) {
             test.setNextResponse([resChallengeCustomSAMLFactor, resSuccess]);
             test.form.submit();
-            return Expect.waitForSpyCall(SharedUtil.redirect);
+            return Expect.waitForSpyCall(RedirectUtil.setWindowLocationTo);
           })
             .then(function () {
-              expect(SharedUtil.redirect).toHaveBeenCalledWith(
+              expect(RedirectUtil.setWindowLocationTo).toHaveBeenCalledWith(
                 'http://rain.okta1.com:1802/policy/mfa-saml-idp-redirect?okta_key=mfa.redirect.id'
               );
             });
@@ -3150,14 +3151,14 @@ function (Okta,
           });
         });
         itp('redirects to third party when Verify button is clicked', function () {
-          spyOn(SharedUtil, 'redirect');
+          spyOn(RedirectUtil, 'setWindowLocationTo');
           return setupCustomOIDCFactor().then(function (test) {
             test.setNextResponse([resChallengeCustomOIDCFactor, resSuccess]);
             test.form.submit();
-            return Expect.waitForSpyCall(SharedUtil.redirect);
+            return Expect.waitForSpyCall(RedirectUtil.setWindowLocationTo);
           })
             .then(function () {
-              expect(SharedUtil.redirect).toHaveBeenCalledWith(
+              expect(RedirectUtil.setWindowLocationTo).toHaveBeenCalledWith(
                 'http://rain.okta1.com:1802/policy/mfa-oidc-idp-redirect?okta_key=mfa.redirect.id'
               );
             });

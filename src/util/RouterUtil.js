@@ -14,14 +14,14 @@
 define([
   'okta',
   './OAuth2Util',
+  './RedirectUtil',
   './Enums',
   './BrowserFeatures',
   './Errors',
   './ErrorCodes'
 ],
-function (Okta, OAuth2Util, Enums, BrowserFeatures, Errors, ErrorCodes) {
+function (Okta, OAuth2Util, RedirectUtil, Enums, BrowserFeatures, Errors, ErrorCodes) {
 
-  var { Util } = Okta.internal.util;
   var fn = {};
 
   var verifyUrlTpl = Okta.tpl('signin/verify/{{provider}}/{{factorType}}');
@@ -130,7 +130,7 @@ function (Okta, OAuth2Util, Enums, BrowserFeatures, Errors, ErrorCodes) {
         successData.stepUp = {
           url: targetUrl,
           finish: function () {
-            Util.redirect(targetUrl);
+            RedirectUtil.redirectTo(targetUrl);
           }
         };
       } else {
@@ -139,11 +139,13 @@ function (Okta, OAuth2Util, Enums, BrowserFeatures, Errors, ErrorCodes) {
         successData.session = {
           token: res.sessionToken,
           setCookieAndRedirect: function (redirectUrl) {
-            Util.redirect(sessionCookieRedirectTpl({
+            var url = sessionCookieRedirectTpl({
               baseUrl: router.settings.get('baseUrl'),
               token: encodeURIComponent(res.sessionToken),
               redirectUrl: encodeURIComponent(redirectUrl)
-            }));
+            });
+
+            RedirectUtil.redirectTo(url);
           }
         };
       }
