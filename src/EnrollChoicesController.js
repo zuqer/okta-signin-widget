@@ -147,7 +147,12 @@ function (Okta, FormController, Enums, RouterUtil, FactorList,
         else if (!required && enrolled) {
           numOptionalEnrolled++;
         }
-        else if ((!required && !enrolled) || additionalEnrollment) {
+        else if (!required && !enrolled) {
+          numOptionalNotEnrolled++;
+        }
+        // If a factor has multiple instances and
+        // additional optional enrollments
+        if (enrolled && additionalEnrollment) {
           numOptionalNotEnrolled++;
         }
       });
