@@ -28,16 +28,16 @@ function (Okta, Errors, FormController, FormType, FooterSignout, Q, FactorUtil, 
 
   var _ = Okta._;
 
-  function getRegisteredKeysSequence(factors) {
+  function getRegisteredKeysSequence (factors) {
     var keys = [];
-    _.each(factors, function(factor) {
+    _.each(factors, function (factor) {
       keys.push({
         version: factor.profile.version,
         keyHandle: factor.profile.credentialId
       });
     });
     return keys;
-  };
+  }
 
   return FormController.extend({
     className: 'mfa-verify verify-u2f',
@@ -74,7 +74,7 @@ function (Okta, Errors, FormController, FormType, FooterSignout, Q, FactorUtil, 
             .then(function (transaction) {
               var registeredKeys, appId, nonce;
               if (transaction.factors) {
-                var factors = transaction.factors
+                var factors = transaction.factors;
                 appId = factors[0]['profile']['appId'];
                 nonce = transaction.challenge.nonce;
                 registeredKeys = getRegisteredKeysSequence(factors);

@@ -167,7 +167,7 @@ function (Okta, TimeUtil) {
         return 'WINDOWS_HELLO';
       }
     }
-    if (provider === 'FIDO' && factorType === 'u2f') {
+    if (factorType === 'u2f') {
       return 'U2F';
     }
     if (provider === 'OKTA' && factorType === 'email') {

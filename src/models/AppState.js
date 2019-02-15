@@ -91,15 +91,30 @@ function (Okta, Q, Factor, BrowserFeatures, Errors) {
     return Okta.loc('minutes', 'login', [factorLifetimeInMinutes]);
   }
 
+  function combineFactorsObjects (factorTypes, factors) {
+    var addedFactorTypes = [];
+    var combinedFactors = [];
+    _.each(factors, function (factor) {
+      var factorType = factor.factorType;
+      if (!_.contains(addedFactorTypes, factorType)) {
+        var factorTypeObj = _.findWhere(factorTypes, {factorType: factorType});
+        if (factorTypeObj) {
+          addedFactorTypes.push(factorType);
+          combinedFactors.push(factorTypeObj);
+        }
+        else {
+          combinedFactors.push(factor);
+        }
+      }
+    });
+    return combinedFactors;
+  }
+
   function setFactorsCollection (self, factorsObject) {
     var settings = self.settings;
     var factors = _.map(factorsObject, function (factor) {
       factor.settings = settings;
       factor.appState = self;
-      //REMOVE!!
-      if(factor.factorType == 'u2f') {
-        factor.provider = 'FIDO';
-      }
       return factor;
     });
     self.set('factors', new Factor.Collection(factors, { parse: true }));
@@ -173,7 +188,9 @@ function (Okta, Q, Factor, BrowserFeatures, Errors) {
       }
       if (res._embedded) {
         if (res._embedded.factorTypes) {
-          setFactorsCollection(self, res._embedded.factorTypes);
+          var allFactors =
+            combineFactorsObjects(res._embedded.factorTypes, res._embedded.factors);
+          setFactorsCollection(self, allFactors);
         }
         else if (res._embedded.factors) {
           setFactorsCollection(self, res._embedded.factors);
