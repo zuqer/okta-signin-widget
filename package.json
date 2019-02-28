@@ -110,6 +110,7 @@
     "webpack-dev-server": "2.11.3"
   },
   "dependencies": {
+    "@okta/i18n": "51.0.0-beta.g9c45330",
     "@okta/okta-auth-js": "1.17.0",
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.26.0",
