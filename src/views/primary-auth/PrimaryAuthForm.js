@@ -97,6 +97,7 @@ define([
       return inputs;
     },
 
+    // TEST
     getUsernameField: function () {
       var userNameFieldObject = {
         label: false,
