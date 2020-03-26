@@ -28,8 +28,8 @@ test(`should have both password and confirmPassword fields and both are required
   // fields are required
   await enrollPasswordPage.clickNextButton();
   await enrollPasswordPage.waitForErrorBox();
-  await t.expect(enrollPasswordPage.getPasswordError().trim()).eql('This field cannot be left blank');
-  await t.expect(enrollPasswordPage.getConfirmPasswordError()).eql('This field cannot be left blank');
+  await t.expect(enrollPasswordPage.getPasswordError()).contains('This field cannot be left blank');
+  await t.expect(enrollPasswordPage.getConfirmPasswordError()).contains('This field cannot be left blank');
 
   // password must match
   await enrollPasswordPage.fillPassword('abcd');
@@ -37,7 +37,7 @@ test(`should have both password and confirmPassword fields and both are required
   await enrollPasswordPage.clickNextButton();
   await enrollPasswordPage.waitForErrorBox();
   await t.expect(enrollPasswordPage.hasPasswordError()).eql(false);
-  await t.expect(enrollPasswordPage.getConfirmPasswordError()).eql('New passwords must match');
+  await t.expect(enrollPasswordPage.getConfirmPasswordError()).contains('New passwords must match');
 });
 
 test(`should succeed when fill same value`, async t => {
