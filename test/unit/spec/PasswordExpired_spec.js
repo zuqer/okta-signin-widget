@@ -434,7 +434,7 @@ function (Okta, OktaAuth, LoginUtil, Util, PasswordExpiredForm, Beacon, Expect, 
           submitNewPass(test, 'newpass', 'differentnewpass');
           expect($.ajax).not.toHaveBeenCalled();
           expect(test.form.hasErrors()).toBe(true);
-          expect(test.form.confirmPassFieldError().text())
+          expect(test.form.confirmPassFieldError().text().trim())
             .toBe('New passwords must match');
         });
       });

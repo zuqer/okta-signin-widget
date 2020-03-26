@@ -32,6 +32,22 @@ import TextBox from '@okta/courage/src/views/forms/inputs/TextBox';
 import Callout from '@okta/courage/src/views/components/Callout';
 import Backbone from 'backbone';
 
+import FrameworkView from '@okta/courage/src/framework/View';
+
+const _viewAdd = FrameworkView.prototype.add;
+FrameworkView.prototype.add = function(view) {
+  if (_.isString(view)) {
+    console.warn('Attempt to add a view as a string: ', view);
+  }
+  return _viewAdd.apply(this, arguments);
+}
+FrameworkView.prototype.compileTemplate = function(str) {
+  console.warn('attempt to compile template: ', str);
+  return function fakeTemplate() {
+    return str;
+  };
+};
+
 const Okta = {
   Backbone: Backbone,
 
@@ -113,5 +129,6 @@ Okta.registerInput('password', PasswordBox);
 Okta.registerInput('checkbox', CheckBox);
 Okta.registerInput('radio', Radio);
 Okta.registerInput('select', Select);
+
 
 module.exports = Okta;

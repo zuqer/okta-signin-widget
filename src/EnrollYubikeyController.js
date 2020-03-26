@@ -52,7 +52,7 @@ function (Okta, FormType, FormController, Footer, TextBox) {
       formChildren: [
         FormType.View({
           View: Okta.View.extend({
-            template: '<div class="yubikey-demo" data-type="yubikey-example"></div>'
+            template: hbs`<div class="yubikey-demo" data-type="yubikey-example"></div>`
           })
         }),
         FormType.Input({

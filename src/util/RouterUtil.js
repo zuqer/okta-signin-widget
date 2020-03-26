@@ -34,10 +34,10 @@ function (Okta, OAuth2Util, Util, Enums, BrowserFeatures, Errors, ErrorCodes) {
   );
   var recoveryUrlTpl = hbs('signin/recovery/{{recoveryToken}}');
   var refreshUrlTpl = hbs('signin/refresh-auth-state{{#if token}}/{{token}}{{/if}}');
-  var sessionCookieRedirectTpl = hbs('\
-    {{baseUrl}}/login/sessionCookieRedirect?checkAccountSetupComplete=true\
-    &token={{{token}}}&redirectUrl={{{redirectUrl}}}\
-  ');
+  var sessionCookieRedirectTpl = hbs(
+    // eslint-disable-next-line max-len
+    '{{baseUrl}}/login/sessionCookieRedirect?checkAccountSetupComplete=true&token={{{token}}}&redirectUrl={{{redirectUrl}}}'
+  );
 
   fn.isHostBackgroundChromeTab = function () {
     // Checks if the SIW is loaded in a chrome webview and
