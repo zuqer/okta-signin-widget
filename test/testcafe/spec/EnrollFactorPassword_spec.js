@@ -28,7 +28,7 @@ test(`should have both password and confirmPassword fields and both are required
   // fields are required
   await enrollPasswordPage.clickNextButton();
   await enrollPasswordPage.waitForErrorBox();
-  await t.expect(enrollPasswordPage.getPasswordError()).eql('This field cannot be left blank');
+  await t.expect(enrollPasswordPage.getPasswordError().trim()).eql('This field cannot be left blank');
   await t.expect(enrollPasswordPage.getConfirmPasswordError()).eql('This field cannot be left blank');
 
   // password must match
