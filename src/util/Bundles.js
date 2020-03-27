@@ -13,18 +13,15 @@
 define([
   'jquery',
   'underscore',
-  'handlebars',
   'q',
   'nls/login.json',
   'nls/country.json',
   'util/Logger',
   'config/config.json',
   'util/BrowserFeatures'
-], function ($, _, Handlebars, Q, login, country, Logger, config, BrowserFeatures) {
+], function ($, _, Q, login, country, Logger, config, BrowserFeatures) {
 
   var STORAGE_KEY = 'osw.languages';
-
-  var bundlePathTpl = Handlebars.compile('/labels/jsonp/{{bundle}}_{{languageCode}}.jsonp');
 
   /**
    * Converts options to our internal format, which distinguishes between
@@ -104,9 +101,7 @@ define([
     localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
   }
 
-  // We use jsonp to get around any CORS issues if the developer is using
-  // the hosted version of the widget - by default, the assets.bundleUrl is
-  // tied to the Okta CDN.
+  // By default, the assets.bundleUrl is tied to the Okta CDN.
   //
   // There are two overrides available for modifying where we load the asset
   // bundles from:
@@ -127,33 +122,27 @@ define([
   //    cachebusting step, i.e:
   //
   //    function rewrite(file) {
-  //      // file: /labels/jsonp/login_ja.jsonp
-  //      return file.replace('.jsonp', '.' + md5file(file) + '.jsonp');
+  //      // file: /labels/json/login_ja.json
+  //      return file.replace('.json', '.' + md5file(file) + '.json');
   //    }
   //
   // Note: Most developers will not need to use these overrides - the default
   // is to use the Okta CDN and to use the same path + file structure the
   // widget module publishes by default.
-  function fetchJsonp (bundle, language, assets) {
+  function fetchJson (bundle, language, assets) {
     var languageCode, path;
 
     // Our bundles use _ to separate country and region, i.e:
     // zh-CN -> zh_CN
     languageCode = language.replace('-', '_');
 
-    path = assets.rewrite(bundlePathTpl({
-      bundle: bundle,
-      languageCode: languageCode
-    }));
+    path = assets.rewrite(`/labels/json/${bundle}_${languageCode}.json`);
 
     return $.ajax({
       url: assets.baseUrl + path,
-      dataType: 'jsonp',
+      method: 'GET',
+      contentType: 'application/json',
       cache: true,
-      // jQuery jsonp doesn't handle errors, so set a long timeout as a
-      // fallback option
-      timeout: 5000,
-      jsonpCallback: 'jsonp_' + bundle
     });
   }
 
@@ -177,8 +166,8 @@ define([
     }
 
     return Q.all([
-      fetchJsonp('login', language, assets),
-      fetchJsonp('country', language, assets)
+      fetchJson('login', language, assets),
+      fetchJson('country', language, assets)
     ])
       .spread(function (loginJson, countryJson) {
         if (localStorageIsSupported) {

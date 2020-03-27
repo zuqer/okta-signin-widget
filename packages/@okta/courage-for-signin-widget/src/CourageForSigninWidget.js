@@ -11,7 +11,7 @@ import Cookie from '@okta/courage/src/util/Cookie';
 import Keys from '@okta/courage/src/util/Keys';
 import Logger from '@okta/courage/src/util/Logger';
 import StringUtil from '@okta/courage/src/util/StringUtil';
-import TemplateUtil from '@okta/courage/src/util/TemplateUtil';
+// import TemplateUtil from '@okta/courage/src/util/TemplateUtil';
 import Util from '@okta/courage/src/util/Util';
 import Handlebars from '@okta/courage/src/util/handlebars-wrapper';
 import $ from '@okta/courage/src/util/jquery-wrapper';
@@ -32,6 +32,22 @@ import TextBox from '@okta/courage/src/views/forms/inputs/TextBox';
 import Callout from '@okta/courage/src/views/components/Callout';
 import Backbone from 'backbone';
 
+import FrameworkView from '@okta/courage/src/framework/View';
+
+const _viewAdd = FrameworkView.prototype.add;
+FrameworkView.prototype.add = function(view) {
+  if (_.isString(view)) {
+    console.warn('Attempt to add a view as a string: ', view);
+  }
+  return _viewAdd.apply(this, arguments);
+}
+FrameworkView.prototype.compileTemplate = function(str) {
+  console.warn('attempt to compile template: ', str);
+  return function fakeTemplate() {
+    return str;
+  };
+};
+
 const Okta = {
   Backbone: Backbone,
 
@@ -49,7 +65,7 @@ const Okta = {
 
   registerInput: InputRegistry.register,
 
-  tpl: TemplateUtil.tpl,
+  // tpl: TemplateUtil.tpl,
 
   Model: Model,
 
@@ -113,5 +129,6 @@ Okta.registerInput('password', PasswordBox);
 Okta.registerInput('checkbox', CheckBox);
 Okta.registerInput('radio', Radio);
 Okta.registerInput('select', Select);
+
 
 module.exports = Okta;
