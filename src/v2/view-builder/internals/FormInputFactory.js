@@ -3,7 +3,7 @@ import FactorOptions from '../components/FactorOptions';
 import FactorUtil from '../../util/FactorUtil';
 
 const changeLabelToTop = (opt) => {
-  return Object.assign({}, opt, { 'label-top': true });
+  return Object.assign({}, opt, { 'label-top': true, wide: true });
 };
 
 const createFactorSelectView = (opt) => {
@@ -37,6 +37,8 @@ const createAuthenticatorSelectView = (opt) => {
 const inputCreationStrategy = {
   text: changeLabelToTop,
   password: changeLabelToTop,
+  radio: changeLabelToTop,
+  select: changeLabelToTop,
   factorSelect: createFactorSelectView,
   authenticatorSelect: createAuthenticatorSelectView,
 };

@@ -23,6 +23,8 @@ import RequiredFactorEmailView from './views/email/RequiredFactorEmailView';
 import TerminalReturnEmailView from './views/email/TerminalReturnEmailView';
 import TerminalTransferedEmailView from './views/email/TerminalTransferedEmailView';
 
+import EnrollSecurityQuestionView from './views/security-question/EnrollSecurityQuestionView';
+
 const DEFAULT = '_';
 
 const VIEWS_MAPPING = {
@@ -71,7 +73,7 @@ const VIEWS_MAPPING = {
     password: EnrollFactorPasswordView,
     webauthn: null,
     phone: null,
-    'security_question': null
+    'security_question': EnrollSecurityQuestionView,
   },
   'challenge-authenticator': {
     email: RequiredFactorEmailView,

@@ -12,7 +12,8 @@ const idx = {
   ],
   '/idp/idx/enroll': ['enroll-profile'],
   '/idp/idx/credential/enroll': [
-    'authenticator-enroll-password',
+    // 'authenticator-enroll-password',
+    'authenticator-enroll-security-question'
   ],
   '/idp/idx/challenge/answer': [
     // 'error-email-verify',

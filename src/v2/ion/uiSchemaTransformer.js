@@ -156,6 +156,28 @@ const createUISchema = (remediationValue = [], factors = [], authenticators = []
       uiSchema.options = createAuthenticatorOptions(ionFormField.options, authenticators);
     }
 
+    if (ionFormField.name === 'credentials.questionMode') {
+      uiSchema.type = 'radio';
+      uiSchema.options = _.object(
+        ionFormField.options.map(_.property('value')),
+        ionFormField.options.map(_.property('label'))
+      );
+    }
+
+    if (ionFormField.name === 'credentials.question') {
+      uiSchema.type = 'select';
+      uiSchema.options = _.object(
+        ionFormField.options.map(_.property('value')),
+        ionFormField.options.map(_.property('label'))
+      );
+      uiSchema.showWhen = {
+        'credentials.questionMode': 'suggested'
+      };
+    }
+
+
+
+
     return Object.assign(
       {},
       ionFormField,

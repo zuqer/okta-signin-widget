@@ -29,6 +29,12 @@ const factorData = {
     description: '',
     iconClassName: 'mfa-webauthn',
   },
+
+  'security_question': {
+    label: loc('factor.securityQuestion', 'login'),
+    description: '',
+    iconClassName: 'mfa-okta-security-question',
+  },
 };
 
 const getFactorData = function (factorName) {

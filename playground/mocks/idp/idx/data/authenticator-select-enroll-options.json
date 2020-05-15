@@ -64,6 +64,25 @@
                     ]
                   }
                 }
+              },
+              {
+                "label": "Security Question",
+                "form": {
+                    "value": [
+                        {
+                            "name": "id",
+                            "required": true,
+                            "value": "auta342Zz6DYTcqAG0g4",
+                            "mutable": false
+                        },
+                        {
+                            "name": "methodType",
+                            "required": false,
+                            "value": "security_question",
+                            "mutable": false
+                        }
+                    ]
+                }
               }
             ]
           },
@@ -90,6 +109,10 @@
         "authenticatorType": "webauthn",
         "authenticatorId": "aidtheidkwh282hv8g3",
         "authenticatorName": "Security Key or Biometric Authenticator (FIDO2)"
+      },
+      {
+        "authenticatorType": "security_question",
+        "authenticatorId": "auta342Zz6DYTcqAG0g4"
       }
     ]
   },

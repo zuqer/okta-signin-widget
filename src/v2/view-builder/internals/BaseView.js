@@ -21,9 +21,7 @@ export default View.extend({
   initialize () {
     // Create Model
     const IonModel = this.createModelClass();
-    const model = new IonModel ({
-      formName: this.options.currentViewState.name,
-    });
+    const model = this.initializeModel(IonModel);
 
     // Add Views
     this.add(this.Header, { selector: '.siw-main-header' });
@@ -34,6 +32,12 @@ export default View.extend({
       },
     });
     this.add(this.Footer, { selector : '.siw-main-footer' });
+  },
+
+  initializeModel(IonModel) {
+    return new IonModel ({
+      formName: this.options.currentViewState.name,
+    });
   },
 
   postRender () {

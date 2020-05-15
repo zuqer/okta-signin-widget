@@ -1,0 +1,248 @@
+{
+  "version": "1.0.0",
+  "stateHandle": "01OCl7uyAUC4CUqHsObI9bvFiq01cRFgbnpJQ1bz82",
+  "expiresAt": "2018-09-17T23:08:56.000Z",
+  "step": "ENROLL",
+  "intent": "login",
+  "remediation": {
+    "type": "array",
+    "value": [
+      {
+        "rel": [
+          "create-form"
+        ],
+        "name": "enroll-authenticator",
+        "href": "http://localhost:3000/idp/idx/challenge/answer",
+        "method": "POST",
+        "accepts": "application/vnd.okta.v1+json",
+        "value": [
+          {
+            "name": "credentials",
+            "form": {
+              "value": [
+                {
+                  "name": "questionMode",
+                  "visible": false,
+                  "options": [
+                    {
+                      "label": "Choose a security question",
+                      "value": "suggested"
+                    },
+                    {
+                      "label": "Create my own security question",
+                      "value": "custom"
+                    }
+                  ]
+                },
+                {
+                  "name": "question",
+                  "options": [
+                    {
+                      "label": "What is the food you least liked as a child?",
+                      "value": "disliked_food"
+                    },
+                    {
+                      "label": "What is the name of your first stuffed animal?",
+                      "value": "name_of_first_plush_toy"
+                    },
+                    {
+                      "label": "What did you earn your first medal or award for?",
+                      "value": "first_award"
+                    },
+                    {
+                      "label": "What is your favorite security question?",
+                      "value": "favorite_security_question"
+                    },
+                    {
+                      "label": "What is the toy/stuffed animal you liked the most as a kid?",
+                      "value": "favorite_toy"
+                    },
+                    {
+                      "label": "What was the first computer game you played?",
+                      "value": "first_computer_game"
+                    },
+                    {
+                      "label": "What is your favorite movie quote?",
+                      "value": "favorite_movie_quote"
+                    },
+                    {
+                      "label": "What was the mascot of the first sports team you played on?",
+                      "value": "first_sports_team_mascot"
+                    },
+                    {
+                      "label": "What music album or song did you first purchase?",
+                      "value": "first_music_purchase"
+                    },
+                    {
+                      "label": "Where did you go for your favorite vacation?",
+                      "value": "favorite_vacation_location"
+                    }
+                  ]
+                },
+                {
+                  "name": "answer",
+                  "label": "answer",
+                  "secret": true
+                }
+              ]
+            }
+          },
+          {
+            "name": "stateHandle",
+            "required": true,
+            "value": "xyz",
+            "visible": false,
+            "mutable": false
+          }
+        ]
+      },
+      {
+        "rel": [
+          "create-form"
+        ],
+        "name": "select-authenticator-enroll",
+        "href": "http://localhost:3000/idp/idx/credential/enroll",
+        "method": "POST",
+        "accepts": "application/vnd.okta.v1+json",
+        "value": [
+          {
+            "name": "authenticator",
+            "type": "object",
+            "options": [
+              {
+                "label": "Phone",
+                "form": {
+                  "value": [
+                    {
+                      "name": "id",
+                      "required": true,
+                      "value": "auta3ggrsOT6uN7Zc0g4",
+                      "mutable": false
+                    },
+                    {
+                      "name": "methodType",
+                      "required": false,
+                      "value": "sms",
+                      "mutable": false
+                    }
+                  ]
+                }
+              },
+              {
+                "label": "Security Question",
+                "form": {
+                  "value": [
+                    {
+                      "name": "id",
+                      "required": true,
+                      "value": "auta342Zz6DYTcqAG0g4",
+                      "mutable": false
+                    },
+                    {
+                      "name": "methodType",
+                      "required": false,
+                      "value": "security_question",
+                      "mutable": false
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "name": "stateHandle",
+            "required": true,
+            "value": "xyz",
+            "visible": false,
+            "mutable": false
+          }
+        ]
+      }
+    ]
+  },
+  "authenticator": {
+    "type": "object",
+    "value": {
+      "profile": {
+        "name": "Security Question"
+      },
+      "contextualData": {
+        "questions": [
+          {
+            "question": "disliked_food",
+            "questionText": "What is the food you least liked as a child?"
+          },
+          {
+            "question": "name_of_first_plush_toy",
+            "questionText": "What is the name of your first stuffed animal?"
+          },
+          {
+            "question": "favorite_vacation_location",
+            "questionText": "Where did you go for your favorite vacation?"
+          }
+        ]
+      },
+      "authenticatorType": "security_question",
+      "authenticatorId": "auta342Zz6DYTcqAG0g4"
+    }
+  },
+  "authenticators": {
+    "type": "array",
+    "value": [
+      {
+        "authenticatorType": "phone",
+        "authenticatorId": "auta3ggrsOT6uN7Zc0g4"
+      },
+      {
+        "authenticatorType": "security_question",
+        "authenticatorId": "auta342Zz6DYTcqAG0g4"
+      }
+    ]
+  },
+  "enrollmentAuthenticator": {
+    "type": "object",
+    "value": {
+      "profile": {
+        "name": "Security Question"
+      },
+      "authenticatorType": "security_question",
+      "authenticatorId": "auta342Zz6DYTcqAG0g4"
+    }
+  },
+  "user": {
+    "type": "object",
+    "value": {
+      "id": "00ua5xqpIwpaECZL20g4"
+    }
+  },
+  "cancel": {
+    "rel": [
+      "create-form"
+    ],
+    "name": "cancel",
+    "href": "http://localhost:3000/idp/idx/cancel",
+    "method": "POST",
+    "value": [
+      {
+        "name": "stateHandle",
+        "value": "01OCl7uyAUC4CUqHsObI9bvFiq01cRFgbnpJQ1bz82",
+        "visible": false
+      }
+    ]
+  },
+  "context": {
+    "rel": [
+      "create-form"
+    ],
+    "name": "context",
+    "href": "http://localhost:3000/idp/idx/context",
+    "method": "POST",
+    "value": [
+      {
+        "name": "stateHandle",
+        "value": "01OCl7uyAUC4CUqHsObI9bvFiq01cRFgbnpJQ1bz82",
+        "visible": false
+      }
+    ]
+  }
+}
