@@ -26,7 +26,9 @@ if (process.env.TRAVIS) {
     config.sauceUser = process.env.SAUCE_USERNAME;
     config.sauceKey = process.env.SAUCE_ACCESS_KEY;
     // Default port for Appium
-    config.port = 4723;
+    if (process.env.SAUCE_PLATFORM_NAME !== 'desktop') {
+      config.port = 4723;
+    }
   } else {
     // Desktop browser
     config.capabilities = {
@@ -45,6 +47,17 @@ if (process.env.TRAVIS) {
   else if (process.env.SAUCE_PLATFORM_NAME === 'android') {
     var appiumAndroid = require('./appium/android-conf.js');
     config.multiCapabilities = appiumAndroid.androidCapabilities;
+  }
+
+  if (process.env.SAUCE_PLATFORM_NAME === 'desktop') {
+    config.capabilities =
+    {
+      'browserName': 'internet explorer',
+      'browserVersion': 'latest',
+      'platformName': 'Windows 10',
+      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+      'build': process.env.TRAVIS_BUILD_NUMBER
+    };
   }
 }
 // Local tests, required:

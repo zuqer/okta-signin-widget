@@ -12,5 +12,7 @@ if [ "${TRAVIS_EVENT_TYPE}" = "cron" ] ; then
     fi
     yarn test:e2e
 else
-    yarn $TEST_SUITE
+    export SAUCE_PLATFORM_NAME="desktop";
+    yarn test:e2e
+    # yarn $TEST_SUITE
 fi
